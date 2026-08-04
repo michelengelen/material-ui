@@ -264,7 +264,12 @@ async function run(argv) {
     }
   }
 
-  const stale = nextIndex !== currentIndex || nextScorecard !== currentScorecard;
+  // Compare the scorecard by value: Prettier reflows short arrays onto one
+  // line, which is a formatting difference, not a stale rollup.
+  const sameScorecard =
+    currentScorecard !== null &&
+    JSON.stringify(JSON.parse(currentScorecard)) === JSON.stringify(scorecard);
+  const stale = nextIndex !== currentIndex || !sameScorecard;
 
   if (check) {
     if (stale) {
