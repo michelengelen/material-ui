@@ -77,7 +77,8 @@ function parseCriteria(markdown) {
       return;
     }
     const [, number, name, level] = heading;
-    const statusLine = lines.slice(index + 1, index + 4).find((candidate) => candidate.trim()) ?? '';
+    const statusLine =
+      lines.slice(index + 1, index + 4).find((candidate) => candidate.trim()) ?? '';
     const tokens = [...statusLine.matchAll(/`([^`]+)`/g)].map((match) => match[1]);
 
     const flagged = tokens.some((token) => token.includes('🚩'));
@@ -174,26 +175,26 @@ function toNumber(value) {
 
 async function collectReports() {
   const entries = await fs.readdir(componentsDirectory, { withFileTypes: true });
-  const reports = [];
 
-  for (const entry of entries) {
-    if (!entry.isDirectory()) {
-      continue;
-    }
-    const reportPath = path.join(componentsDirectory, entry.name, 'accessibility.md');
-    let markdown;
-    try {
-      markdown = await fs.readFile(reportPath, 'utf8');
-    } catch (error) {
-      if (error.code !== 'ENOENT') {
-        throw error;
-      }
-      continue;
-    }
-    reports.push({ component: entry.name, ...parseReport(markdown) });
-  }
+  const reports = await Promise.all(
+    entries
+      .filter((entry) => entry.isDirectory())
+      .map(async (entry) => {
+        const reportPath = path.join(componentsDirectory, entry.name, 'accessibility.md');
+        try {
+          const markdown = await fs.readFile(reportPath, 'utf8');
+          return { component: entry.name, ...parseReport(markdown) };
+        } catch (error) {
+          if (error.code !== 'ENOENT') {
+            throw error;
+          }
+          // A component without a report simply has not been assessed yet.
+          return null;
+        }
+      }),
+  );
 
-  return reports.sort((a, b) => a.component.localeCompare(b.component));
+  return reports.filter(Boolean).sort((a, b) => a.component.localeCompare(b.component));
 }
 
 function renderTable(reports) {
@@ -209,10 +210,7 @@ function renderTable(reports) {
   });
 
   const totals = FIELDS.reduce((accumulator, [, field]) => {
-    accumulator[field] = reports.reduce(
-      (sum, report) => sum + toNumber(report.counts[field]),
-      0,
-    );
+    accumulator[field] = reports.reduce((sum, report) => sum + toNumber(report.counts[field]), 0);
     return accumulator;
   }, {});
 
