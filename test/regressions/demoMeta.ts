@@ -148,8 +148,30 @@ export const SCREENSHOT_RULES: ScreenshotRule[] = [
     viewportWidth: 1440,
     waitForSelector: '.MuiDataGrid-row:not(.MuiDataGrid-rowSkeleton) .MuiDataGrid-cell',
   },
+  { test: 'docs/data/material/components/accordion/AccordionA11y*', enabled: false }, // A11y-only coverage fixtures
+  { test: 'docs/data/material/components/accordion/AccordionA11yTextSpacing', enabled: true }, // Visual regression for text spacing (1.4.12); adds no unique axe coverage
   { test: 'docs/data/material/components/buttons/ButtonA11y*', enabled: false }, // A11y-only coverage fixtures
   { test: 'docs/data/material/components/buttons/ButtonA11yTextSpacing', enabled: true }, // Visual regression for text spacing (1.4.12); adds no unique axe coverage
+  { test: 'docs/data/material/components/progress/*', enabled: false }, // Animated progress bars make screenshots flaky; axe still runs on the enrolled LinearProgress demos
+  { test: 'docs/data/material/components/toggle-button/ToggleButtonA11y*', enabled: false }, // A11y-only coverage fixtures
+  {
+    test: 'docs/data/material/components/toggle-button/ToggleButtonA11yTextSpacing',
+    enabled: true,
+  }, // Visual regression for text spacing (1.4.12); adds no unique axe coverage
+];
+
+// Accordion docs demos + a11y fixtures enrolled for axe assertions (the cluster:
+// root Accordion + AccordionSummary header + AccordionDetails/Actions).
+const ACCORDION_A11Y_DEMOS = [
+  'AccordionUsage',
+  'AccordionExpandDefault',
+  'AccordionExpandIcon',
+  'ControlledAccordions',
+  'CustomizedAccordions',
+  'DisabledAccordion',
+  'AccordionTransition',
+  'AccordionA11yNonNative',
+  'AccordionA11yTextSpacing',
 ];
 
 // Button docs demos enrolled for axe assertions; IconButton/ButtonBase demos are excluded.
@@ -181,17 +203,18 @@ const CHECKBOX_A11Y_DEMOS = [
   'CheckboxesGroup',
 ];
 
-// Switch docs demos enrolled for axe assertions. FormControlLabelPosition is
-// excluded: its `aria-label` on a role-less FormGroup div trips
-// `aria-prohibited-attr`, a demo quirk unrelated to Switch.
-const SWITCH_A11Y_DEMOS = [
-  'BasicSwitches',
-  'SwitchLabels',
-  'ColorSwitches',
-  'ControlledSwitches',
-  'CustomizedSwitches',
-  'SwitchesSize',
-  'SwitchesGroup',
+// LinearProgress docs demos enrolled for axe assertions; CircularProgress and
+// the mixed/customized demos (CustomizedProgressBars, DelayingAppearance) are excluded.
+const LINEARPROGRESS_A11Y_DEMOS = [
+  'LinearIndeterminate',
+  'LinearDeterminate',
+  'LinearBuffer',
+  'LinearQuery',
+  'LinearColor',
+  'LinearWithValueLabel',
+  'LinearWithAriaValueText',
+  'LinearProgressA11ySemanticStates',
+  'LinearProgressA11yColorMatrix',
 ];
 
 // Radio docs demos enrolled for axe assertions. FormControlLabelPlacement is left out: its axe
@@ -206,59 +229,21 @@ const RADIO_A11Y_DEMOS = [
   'RowRadioButtonsGroup',
   'ErrorRadios',
   'UseRadioGroup',
-  { test: 'docs/data/material/components/toggle-button/ToggleButtonA11y*', enabled: false }, // A11y-only coverage fixtures
-  {
-    test: 'docs/data/material/components/toggle-button/ToggleButtonA11yTextSpacing',
-    enabled: true,
-  }, // Visual regression for text spacing (1.4.12); adds no unique axe coverage
-
-// toggle-button docs demos enrolled for axe assertions; the remaining demos add
-// no axe coverage beyond the fixtures below.
-const TOGGLE_BUTTON_A11Y_DEMOS = [
-  'ToggleButtons',
-  'ToggleButtonsMultiple',
-  'VerticalToggleButtons',
-  'ToggleButtonA11yNonNative',
-  'ToggleButtonA11ySemanticStates',
-  'ToggleButtonA11yTextSpacing',
-  { test: 'docs/data/material/components/progress/*', enabled: false }, // Animated progress bars make screenshots flaky; axe still runs on the enrolled LinearProgress demos
-
-// LinearProgress docs demos enrolled for axe assertions; CircularProgress and
-// the mixed/customized demos (CustomizedProgressBars, DelayingAppearance) are excluded.
-const LINEARPROGRESS_A11Y_DEMOS = [
-  'LinearIndeterminate',
-  'LinearDeterminate',
-  'LinearBuffer',
-  'LinearQuery',
-  'LinearColor',
-  'LinearWithValueLabel',
-  'LinearWithAriaValueText',
-  'LinearProgressA11ySemanticStates',
-  'LinearProgressA11yColorMatrix',
-  { test: 'docs/data/material/components/accordion/AccordionA11y*', enabled: false }, // A11y-only coverage fixtures
-  { test: 'docs/data/material/components/accordion/AccordionA11yTextSpacing', enabled: true }, // Visual regression for text spacing (1.4.12); adds no unique axe coverage
-
-// Accordion docs demos + a11y fixtures enrolled for axe assertions (the cluster:
-// root Accordion + AccordionSummary header + AccordionDetails/Actions).
-const ACCORDION_A11Y_DEMOS = [
-  'AccordionUsage',
-  'AccordionExpandDefault',
-  'AccordionExpandIcon',
-  'ControlledAccordions',
-  'CustomizedAccordions',
-  'DisabledAccordion',
-  'AccordionTransition',
-  'AccordionA11yNonNative',
-  'AccordionA11yTextSpacing',
 ];
 
-/**
- * A11y defaults to off — only matched-and-enabled rules produce results.
- * Slug-wide rules use `*`; brace-globs narrow enrolment to specific demos;
- * later opt-out rules disable individual demos.
- *
- * Scope: `buttons` and `progress` (LinearProgress). Other components onboard incrementally.
- */
+// Switch docs demos enrolled for axe assertions. FormControlLabelPosition is
+// excluded: its `aria-label` on a role-less FormGroup div trips
+// `aria-prohibited-attr`, a demo quirk unrelated to Switch.
+const SWITCH_A11Y_DEMOS = [
+  'BasicSwitches',
+  'SwitchLabels',
+  'ColorSwitches',
+  'ControlledSwitches',
+  'CustomizedSwitches',
+  'SwitchesSize',
+  'SwitchesGroup',
+];
+
 // TextField docs demos enrolled for axe assertions; the `select` dropdown,
 // InputBase-only, and standalone hidden-label demos are excluded.
 const TEXTFIELD_A11Y_DEMOS = [
@@ -270,16 +255,28 @@ const TEXTFIELD_A11Y_DEMOS = [
   'MultilineTextFields',
 ];
 
+// toggle-button docs demos enrolled for axe assertions; the remaining demos add
+// no axe coverage beyond the fixtures below.
+const TOGGLE_BUTTON_A11Y_DEMOS = [
+  'ToggleButtons',
+  'ToggleButtonsMultiple',
+  'VerticalToggleButtons',
+  'ToggleButtonA11yNonNative',
+  'ToggleButtonA11ySemanticStates',
+  'ToggleButtonA11yTextSpacing',
+];
+
+/**
+ * A11y defaults to off — only matched-and-enabled rules produce results.
+ * Slug-wide rules use `*`; brace-globs narrow enrolment to specific demos;
+ * later opt-out rules disable individual demos.
+ *
+ * Scope: the components with a conformance report under
+ * `packages/mui-material/src/<Component>/accessibility.md`. Others onboard
+ * incrementally.
+ */
 export const A11Y_RULES: A11yRule[] = [
   {
-    test: `docs/data/material/components/buttons/{${BUTTON_A11Y_DEMOS.join(',')}}`,
-    test: `docs/data/material/components/toggle-button/{${TOGGLE_BUTTON_A11Y_DEMOS.join(',')}}`,
-    enabled: true,
-    assertions: 'all',
-  },
-  {
-    test: 'docs/data/material/components/buttons/ButtonA11yColorMatrix',
-    test: 'docs/data/material/components/toggle-button/ToggleButtonA11yColorMatrix',
     // `color-contrast` is recorded but not asserted: the Accordion root's
     // divider `::before` pseudo-element blocks axe's background resolution for
     // the summary label, so the rule returns `incomplete` on some demos.
@@ -304,6 +301,17 @@ export const A11Y_RULES: A11yRule[] = [
     skipAssertions: ['color-contrast'],
   },
   {
+    test: `docs/data/material/components/buttons/{${BUTTON_A11Y_DEMOS.join(',')}}`,
+    enabled: true,
+    assertions: 'all',
+  },
+  {
+    test: 'docs/data/material/components/buttons/ButtonA11yColorMatrix',
+    enabled: true,
+    assertions: 'all',
+    skipAssertions: ['color-contrast'],
+  },
+  {
     test: `docs/data/material/components/checkboxes/{${CHECKBOX_A11Y_DEMOS.join(',')}}`,
     enabled: true,
     assertions: 'all',
@@ -318,16 +326,44 @@ export const A11Y_RULES: A11yRule[] = [
   },
   // FormControlLabelPosition is not enrolled: its only axe finding is an aria-label on a
   // role-less FormGroup div (aria-prohibited-attr), a demo quirk unrelated to Checkbox.
-    test: `docs/data/material/components/switches/{${SWITCH_A11Y_DEMOS.join(',')}}`,
-    test: `docs/data/material/components/radio-buttons/{${RADIO_A11Y_DEMOS.join(',')}}`,
+  {
     test: `docs/data/material/components/progress/{${LINEARPROGRESS_A11Y_DEMOS.join(',')}}`,
+    enabled: true,
+    assertions: 'all',
+  },
+  {
+    test: `docs/data/material/components/radio-buttons/{${RADIO_A11Y_DEMOS.join(',')}}`,
+    enabled: true,
+    assertions: 'all',
+  },
+  {
+    test: `docs/data/material/components/switches/{${SWITCH_A11Y_DEMOS.join(',')}}`,
+    enabled: true,
+    assertions: 'all',
+  },
+  {
     test: `docs/data/material/components/text-fields/{${TEXTFIELD_A11Y_DEMOS.join(',')}}`,
+    enabled: true,
+    assertions: 'all',
     // color-contrast is recorded but not asserted (1.4.3): axe cannot resolve
     // the input value's background through the overlapping notched outline
     // (logged as incomplete), and the focused color labels (warning 3.11:1),
     // error text on the filled surface (4.36:1), and the ~0.42-opacity
     // placeholder (~2.6:1) are known shortfalls kept in the JSON without
     // failing CI.
+    skipAssertions: ['color-contrast'],
+  },
+  {
+    test: `docs/data/material/components/toggle-button/{${TOGGLE_BUTTON_A11Y_DEMOS.join(',')}}`,
+    enabled: true,
+    assertions: 'all',
+  },
+  {
+    test: 'docs/data/material/components/toggle-button/ToggleButtonA11yColorMatrix',
+    enabled: true,
+    assertions: 'all',
+    skipAssertions: ['color-contrast'],
+  },
 ];
 
 export interface ParsedRoute {
