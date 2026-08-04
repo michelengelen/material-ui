@@ -181,6 +181,19 @@ const CHECKBOX_A11Y_DEMOS = [
   'CheckboxesGroup',
 ];
 
+// Switch docs demos enrolled for axe assertions. FormControlLabelPosition is
+// excluded: its `aria-label` on a role-less FormGroup div trips
+// `aria-prohibited-attr`, a demo quirk unrelated to Switch.
+const SWITCH_A11Y_DEMOS = [
+  'BasicSwitches',
+  'SwitchLabels',
+  'ColorSwitches',
+  'ControlledSwitches',
+  'CustomizedSwitches',
+  'SwitchesSize',
+  'SwitchesGroup',
+];
+
 /**
  * A11y defaults to off — only matched-and-enabled rules produce results.
  * Slug-wide rules use `*`; brace-globs narrow enrolment to specific demos;
@@ -229,6 +242,7 @@ export const A11Y_RULES: A11yRule[] = [
   },
   // FormControlLabelPosition is not enrolled: its only axe finding is an aria-label on a
   // role-less FormGroup div (aria-prohibited-attr), a demo quirk unrelated to Checkbox.
+    test: `docs/data/material/components/switches/{${SWITCH_A11Y_DEMOS.join(',')}}`,
 ];
 
 export interface ParsedRoute {
