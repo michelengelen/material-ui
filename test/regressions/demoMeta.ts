@@ -194,6 +194,20 @@ const SWITCH_A11Y_DEMOS = [
   'SwitchesGroup',
 ];
 
+// Radio docs demos enrolled for axe assertions. FormControlLabelPlacement is left out: its axe
+// output duplicates RowRadioButtonsGroup (a row RadioGroup with a FormLabel), adding no new rules.
+const RADIO_A11Y_DEMOS = [
+  'RadioButtons',
+  'RadioButtonsGroup',
+  'ControlledRadioButtonsGroup',
+  'ColorRadioButtons',
+  'CustomizedRadios',
+  'SizeRadioButtons',
+  'RowRadioButtonsGroup',
+  'ErrorRadios',
+  'UseRadioGroup',
+];
+
 /**
  * A11y defaults to off — only matched-and-enabled rules produce results.
  * Slug-wide rules use `*`; brace-globs narrow enrolment to specific demos;
@@ -243,6 +257,7 @@ export const A11Y_RULES: A11yRule[] = [
   // FormControlLabelPosition is not enrolled: its only axe finding is an aria-label on a
   // role-less FormGroup div (aria-prohibited-attr), a demo quirk unrelated to Checkbox.
     test: `docs/data/material/components/switches/{${SWITCH_A11Y_DEMOS.join(',')}}`,
+    test: `docs/data/material/components/radio-buttons/{${RADIO_A11Y_DEMOS.join(',')}}`,
 ];
 
 export interface ParsedRoute {
