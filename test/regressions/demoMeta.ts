@@ -206,6 +206,21 @@ const RADIO_A11Y_DEMOS = [
   'RowRadioButtonsGroup',
   'ErrorRadios',
   'UseRadioGroup',
+  { test: 'docs/data/material/components/toggle-button/ToggleButtonA11y*', enabled: false }, // A11y-only coverage fixtures
+  {
+    test: 'docs/data/material/components/toggle-button/ToggleButtonA11yTextSpacing',
+    enabled: true,
+  }, // Visual regression for text spacing (1.4.12); adds no unique axe coverage
+
+// toggle-button docs demos enrolled for axe assertions; the remaining demos add
+// no axe coverage beyond the fixtures below.
+const TOGGLE_BUTTON_A11Y_DEMOS = [
+  'ToggleButtons',
+  'ToggleButtonsMultiple',
+  'VerticalToggleButtons',
+  'ToggleButtonA11yNonNative',
+  'ToggleButtonA11ySemanticStates',
+  'ToggleButtonA11yTextSpacing',
 ];
 
 /**
@@ -218,11 +233,13 @@ const RADIO_A11Y_DEMOS = [
 export const A11Y_RULES: A11yRule[] = [
   {
     test: `docs/data/material/components/buttons/{${BUTTON_A11Y_DEMOS.join(',')}}`,
+    test: `docs/data/material/components/toggle-button/{${TOGGLE_BUTTON_A11Y_DEMOS.join(',')}}`,
     enabled: true,
     assertions: 'all',
   },
   {
     test: 'docs/data/material/components/buttons/ButtonA11yColorMatrix',
+    test: 'docs/data/material/components/toggle-button/ToggleButtonA11yColorMatrix',
     enabled: true,
     assertions: 'all',
     skipAssertions: ['color-contrast'],
