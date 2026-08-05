@@ -56,9 +56,7 @@
       "level": "A",
       "conformance": "Partially Supports",
       "flagged": true,
-      "affected": [
-        "ToggleButton"
-      ]
+      "affected": ["ToggleButton"]
     },
     {
       "number": "1.4.3",
@@ -66,12 +64,7 @@
       "level": "AA",
       "conformance": "Partially Supports",
       "flagged": true,
-      "affected": [
-        "Avatar",
-        "Button",
-        "TextField",
-        "ToggleButton"
-      ]
+      "affected": ["Avatar", "Button", "TextField", "ToggleButton"]
     },
     {
       "number": "1.4.4",
@@ -145,9 +138,7 @@
       "level": "A",
       "conformance": "Partially Supports",
       "flagged": true,
-      "affected": [
-        "LinearProgress"
-      ]
+      "affected": ["LinearProgress"]
     },
     {
       "number": "2.3.1",
@@ -187,13 +178,7 @@
       "level": "AA",
       "conformance": "Partially Supports",
       "flagged": true,
-      "affected": [
-        "Button",
-        "Checkbox",
-        "Radio",
-        "Switch",
-        "ToggleButton"
-      ]
+      "affected": ["Button", "Checkbox", "Radio", "Switch", "ToggleButton"]
     },
     {
       "number": "2.4.11",
@@ -281,9 +266,7 @@
       "level": "A",
       "conformance": "Partially Supports",
       "flagged": false,
-      "affected": [
-        "Checkbox"
-      ]
+      "affected": ["Checkbox"]
     },
     {
       "number": "4.1.3",
@@ -291,11 +274,7 @@
       "level": "AA",
       "conformance": "Partially Supports",
       "flagged": true,
-      "affected": [
-        "Button",
-        "LinearProgress",
-        "TextField"
-      ]
+      "affected": ["Button", "LinearProgress", "TextField"]
     }
   ],
   "components": [
