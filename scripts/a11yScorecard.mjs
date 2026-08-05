@@ -4,11 +4,12 @@
  *
  * Each `packages/mui-material/src/<Component>/accessibility.md` opens with a
  * count table rating the component against WCAG 2.2 Level A and AA. This script
- * parses those tables and rewrites two generated blocks:
+ * parses those reports and rewrites three generated outputs:
  *
  * - the `Reports` table in `packages/mui-material/src/accessibility.md`
- * - `docs/data/material/getting-started/accessibility/scorecard.json`, which the
- *   public conformance page renders.
+ * - the summary table on the public conformance page
+ * - `docs/data/material/getting-started/accessibility/scorecard.json`, the
+ *   machine-readable rollup behind both.
  *
  * Run with `pnpm a11y:scorecard`; `--check` exits non-zero when either output is
  * stale, so CI can guard against a report landing without its rollup.
@@ -25,6 +26,10 @@ const indexPath = path.join(componentsDirectory, 'accessibility.md');
 const scorecardPath = path.join(
   rootDirectory,
   'docs/data/material/getting-started/accessibility/scorecard.json',
+);
+const docsPagePath = path.join(
+  rootDirectory,
+  'docs/data/material/getting-started/accessibility/accessibility.md',
 );
 
 const START_MARKER = '<!-- scorecard:start -->';
@@ -47,6 +52,9 @@ const FIELDS = [
 
 /** `#### 1.4.3 Contrast (Minimum) · AA` */
 const CRITERION_HEADING_REGEX = /^#### (\d+\.\d+\.\d+) (.+?) · (A|AA)\s*$/;
+
+/** `### 🔁 Hybrid` — criteria are grouped by how they are tested. */
+const TESTING_GROUP_REGEX = /^### (🔍|🔁|⚙️) (Manual|Hybrid|Automated)\s*$/;
 
 const CONFORMANCE_BY_SYMBOL = {
   '✅': 'Supports',
@@ -71,8 +79,14 @@ const CONFORMANCE_SEVERITY = [
 function parseCriteria(markdown) {
   const lines = markdown.split('\n');
   const criteria = [];
+  let group = null;
 
   lines.forEach((line, index) => {
+    const groupHeading = line.match(TESTING_GROUP_REGEX);
+    if (groupHeading) {
+      [, , group] = groupHeading;
+      return;
+    }
     const heading = line.match(CRITERION_HEADING_REGEX);
     if (!heading) {
       return;
@@ -97,6 +111,7 @@ function parseCriteria(markdown) {
       level,
       conformance: symbol ? CONFORMANCE_BY_SYMBOL[symbol] : null,
       responsibility: responsibilityToken?.replace(/^[●◐○]\s*/, '') ?? null,
+      group,
       flagged,
     });
   });
@@ -163,7 +178,32 @@ function parseReport(markdown) {
     .filter((line) => /^- (⚠️|❌|Inherits:)/.test(line.trim()))
     .map((line) => line.trim().replace(/^- /, ''));
 
-  return { counts, gaps, criteria: parseCriteria(markdown) };
+  const criteria = parseCriteria(markdown);
+  return { counts, gaps, criteria, summary: summarize(criteria) };
+}
+
+/**
+ * The per-component row on the public page: how many criteria apply, how they
+ * split by level, how they conform, and how strong the evidence is.
+ *
+ * `verified` counts criteria confirmed by a test or a recorded review — the
+ * ones without a 🚩 flag. `automated` counts those a deterministic test proves
+ * on its own, which is the subset that cannot silently regress.
+ */
+function summarize(criteria) {
+  const rated = criteria.filter((criterion) => criterion.conformance !== 'Not Applicable');
+  const count = (predicate) => rated.filter(predicate).length;
+
+  return {
+    rated: rated.length,
+    levelA: count((criterion) => criterion.level === 'A'),
+    levelAA: count((criterion) => criterion.level === 'AA'),
+    supports: count((criterion) => criterion.conformance === 'Supports'),
+    partiallySupports: count((criterion) => criterion.conformance === 'Partially Supports'),
+    doesNotSupport: count((criterion) => criterion.conformance === 'Does Not Support'),
+    verified: count((criterion) => !criterion.flagged),
+    automated: count((criterion) => criterion.group === 'Automated'),
+  };
 }
 
 function toNumber(value) {
@@ -226,6 +266,29 @@ async function format(source, filepath) {
   return prettier.format(source, { ...config, filepath });
 }
 
+const REPORT_BASE = 'https://github.com/mui/material-ui/blob/master/packages/mui-material/src';
+
+/**
+ * The summary table on the public conformance page. Detail lives in the
+ * per-component reports, so this stays to counts plus a link.
+ */
+function renderDocsTable(reports) {
+  const header = [
+    '| Component | Level A | Level AA | Rated | ✅ Supports | ⚠️ Partially Supports | Verified | Automated |',
+    '| :-------- | ------: | -------: | ----: | ----------: | --------------------: | -------: | --------: |',
+  ];
+
+  const rows = reports.map(({ component, summary }) => {
+    const link = `[${component}](${REPORT_BASE}/${component}/accessibility.md)`;
+    return `| ${link} | ${summary.levelA} | ${summary.levelAA} | ${summary.rated} | ${summary.supports} | ${summary.partiallySupports} | ${summary.verified}/${summary.rated} | ${summary.automated} |`;
+  });
+
+  const sum = (key) => reports.reduce((total, report) => total + report.summary[key], 0);
+  const totalRow = `| **${reports.length} components** | **${sum('levelA')}** | **${sum('levelAA')}** | **${sum('rated')}** | **${sum('supports')}** | **${sum('partiallySupports')}** | **${sum('verified')}/${sum('rated')}** | **${sum('automated')}** |`;
+
+  return [...header, ...rows, totalRow].join('\n');
+}
+
 function replaceBlock(source, replacement) {
   const start = source.indexOf(START_MARKER);
   const end = source.indexOf(END_MARKER);
@@ -258,10 +321,16 @@ async function run(argv) {
     components: reports,
   };
 
-  // Both outputs are committed, so they have to match what Prettier would
+  // All three outputs are committed, so they have to match what Prettier would
   // produce — otherwise `test_static` fails on a file nobody edited by hand.
   const nextIndex = await format(replaceBlock(currentIndex, table), indexPath);
   const nextScorecard = await format(JSON.stringify(scorecard, null, 2), scorecardPath);
+
+  const currentDocsPage = await fs.readFile(docsPagePath, 'utf8');
+  const nextDocsPage = await format(
+    replaceBlock(currentDocsPage, renderDocsTable(reports)),
+    docsPagePath,
+  );
 
   let currentScorecard = null;
   try {
@@ -272,7 +341,10 @@ async function run(argv) {
     }
   }
 
-  const stale = nextIndex !== currentIndex || nextScorecard !== currentScorecard;
+  const stale =
+    nextIndex !== currentIndex ||
+    nextScorecard !== currentScorecard ||
+    nextDocsPage !== currentDocsPage;
 
   if (check) {
     if (stale) {
@@ -288,6 +360,7 @@ async function run(argv) {
   await fs.writeFile(indexPath, nextIndex);
   await fs.mkdir(path.dirname(scorecardPath), { recursive: true });
   await fs.writeFile(scorecardPath, nextScorecard);
+  await fs.writeFile(docsPagePath, nextDocsPage);
 
   console.log(`Scorecard updated for ${reports.length} components:`);
   console.log(
