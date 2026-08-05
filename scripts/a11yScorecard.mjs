@@ -326,11 +326,20 @@ async function run(argv) {
   const nextIndex = await format(replaceBlock(currentIndex, table), indexPath);
   const nextScorecard = await format(JSON.stringify(scorecard, null, 2), scorecardPath);
 
-  const currentDocsPage = await fs.readFile(docsPagePath, 'utf8');
-  const nextDocsPage = await format(
-    replaceBlock(currentDocsPage, renderDocsTable(reports)),
-    docsPagePath,
-  );
+  // The public page is optional: the rollup tooling can land before it, and
+  // anyone can regenerate the index and JSON without the docs page present.
+  let currentDocsPage = null;
+  try {
+    currentDocsPage = await fs.readFile(docsPagePath, 'utf8');
+  } catch (error) {
+    if (error.code !== 'ENOENT') {
+      throw error;
+    }
+  }
+  const nextDocsPage =
+    currentDocsPage === null
+      ? null
+      : await format(replaceBlock(currentDocsPage, renderDocsTable(reports)), docsPagePath);
 
   let currentScorecard = null;
   try {
@@ -360,7 +369,9 @@ async function run(argv) {
   await fs.writeFile(indexPath, nextIndex);
   await fs.mkdir(path.dirname(scorecardPath), { recursive: true });
   await fs.writeFile(scorecardPath, nextScorecard);
-  await fs.writeFile(docsPagePath, nextDocsPage);
+  if (nextDocsPage !== null) {
+    await fs.writeFile(docsPagePath, nextDocsPage);
+  }
 
   console.log(`Scorecard updated for ${reports.length} components:`);
   console.log(
