@@ -20,6 +20,13 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 
 ### 🔍 Manual
 
+#### 1.4.1 Use of Color · A
+
+`🚩` · `✅ Supports` · `● Component`
+
+- Determinate progress is conveyed by the length of the filled bar (the `bar1` transform) and by `aria-valuenow`, not by color, so the value survives without color. Unit tests assert the `bar1` transform tracks `value` (`value={77}` renders `translateX(-23%)`), confirming the proportion is encoded by length, not color.
+- The `color` prop (`primary`, `error`, and so on) is decorative and does not encode the value. Whether the fill is visually distinguishable from the track is a contrast question, covered by 1.4.11.
+
 #### 1.3.3 Sensory Characteristics · A
 
 `✅ Supports` · `○ Author`
@@ -33,19 +40,6 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 2. Check that it names the bar by its label, not only by color, shape, size, or position.
 
 **Pass:** no instruction relies on a sensory characteristic alone.
-
-#### 1.4.10 Reflow · AA
-
-`🚩` · `✅ Supports` · `◐ Shared`
-
-- The root is a block element with no intrinsic or minimum width and a fixed `4px` height, so it takes the width of its container and reflows without adding horizontal scrolling. Overflow at 320 CSS pixels comes from the surrounding layout, such as a fixed-width wrapper.
-
-**Manual testing steps**
-
-1. In a UI with a progress bar, set the window (or the DevTools device toolbar) to 320 CSS pixels wide.
-2. Confirm the bar reflows to the container width with no sideways scrolling.
-
-**Pass:** content reflows with no horizontal scroll.
 
 #### 1.4.11 Non-text Contrast · AA
 
@@ -167,12 +161,11 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 
 ### ⚙️ Automated
 
-#### 1.4.1 Use of Color · A
+#### 1.4.10 Reflow · AA
 
-`✅ Supports` · `● Component`
+`✅ Supports` · `◐ Shared`
 
-- Determinate progress is conveyed by the length of the filled bar (the `bar1` transform) and by `aria-valuenow`, not by color, so the value survives without color. Unit tests assert the `bar1` transform tracks `value` (`value={77}` renders `translateX(-23%)`), confirming the proportion is encoded by length, not color.
-- The `color` prop (`primary`, `error`, and so on) is decorative and does not encode the value. Whether the fill is visually distinguishable from the track is a contrast question, covered by 1.4.11.
+- The root is a block element with no intrinsic or minimum width and a fixed `4px` height, so it takes the width of its container and reflows without adding horizontal scrolling. Overflow at 320 CSS pixels comes from the surrounding layout, such as a fixed-width wrapper. Covered by a Playwright test at a 320px viewport.
 
 ## Not applicable
 

@@ -8,7 +8,7 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 | ⚠️ Partially Supports | 3     |
 | ❌ Does Not Support   | 0     |
 | ➖ Not Applicable     | 27    |
-| 🚩 Flagged            | 9/28  |
+| 🚩 Flagged            | 5/28  |
 
 ## Known gaps
 
@@ -48,20 +48,6 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 
 **Pass:** no instruction relies on color, shape, size, or position without naming the field.
 
-#### 1.4.4 Resize Text · AA
-
-`🚩` · `✅ Supports` · `◐ Shared`
-
-- The label, input value, and helper text are set in `rem`, so they scale with browser zoom or root font size rather than staying pixel-fixed.
-- A fixed-pixel container in the surrounding layout could clip the field at 200%.
-
-**Manual testing steps**
-
-1. In a form with text fields, set browser zoom to 200% (<kbd>Ctrl</kbd> or <kbd>Cmd</kbd> and <kbd>+</kbd>).
-2. Confirm the label, value, and helper text are fully visible and the field still accepts input.
-
-**Pass:** nothing is clipped or cut off at 200%.
-
 #### 1.4.5 Images of Text · AA
 
 `✅ Supports` · `○ Author`
@@ -74,20 +60,6 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 1. Inspect the label and helper nodes and confirm they are selectable live text, not `<img>` or background images of text.
 
 **Pass:** labels and helper text are live text.
-
-#### 1.4.10 Reflow · AA
-
-`🚩` · `✅ Supports` · `◐ Shared`
-
-- The field is an inline-flex control with no fixed min-width of its own, and `fullWidth` makes it fill the container, so it reflows into a 320 CSS pixel viewport.
-- Real failures usually come from the surrounding layout, such as a row of fields that does not wrap.
-
-**Manual testing steps**
-
-1. Set the viewport to 320 CSS pixels wide (or 400% zoom at 1280px) and confirm fields stack with no horizontal scrollbar.
-2. Confirm a long helper text wraps rather than overflowing.
-
-**Pass:** content reflows to one column with no two-dimensional scrolling and no loss of function.
 
 #### 1.4.11 Non-text Contrast · AA
 
@@ -131,20 +103,6 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 2. Press <kbd>Tab</kbd> to move focus onto it.
 
 **Pass:** at least part of the focused field stays visible, never fully covered.
-
-#### 2.5.2 Pointer Cancellation · A
-
-`🚩` · `✅ Supports` · `● Component`
-
-- The native `<input>` runs no command on the pointer down-event; clicking only moves focus, which is reversible by clicking elsewhere.
-- The component registers no custom pointer handler that would act before pointer-up.
-
-**Manual testing steps**
-
-1. Press and hold the pointer on a field, then drag off it before releasing.
-2. Confirm nothing is submitted or triggered by the press alone.
-
-**Pass:** no irreversible action runs on the pointer down-event.
 
 #### 3.2.4 Consistent Identification · AA
 
@@ -244,20 +202,6 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 
 **Pass:** label, value, placeholder, and error text meet `4.5:1` (`3:1` for large text) against the actual background. The placeholder, focused `warning`, and filled-surface error text are the known failures.
 
-#### 1.4.12 Text Spacing · AA
-
-`🚩` · `✅ Supports` · `◐ Shared`
-
-- The component has no styles that would block user overrides, so the WCAG text-spacing values apply to the label, value, and helper text. Covered by axe-core (`avoid-inline-spacing`).
-- The single-line input has a fixed height, so confirm by eye that a long label or helper text does not clip when the spacing values are applied.
-
-**Manual testing steps**
-
-1. On a field with a long label and helper text, apply the WCAG text-spacing overrides via the DevTools console: `document.head.insertAdjacentHTML('beforeend','<style>*{line-height:1.5!important;letter-spacing:.12em!important;word-spacing:.16em!important}</style>')`.
-2. Confirm labels, values, and helper text are not clipped or overlapping and the field still accepts input.
-
-**Pass:** applying the text-spacing overrides causes no clipping, overlap, or loss of text or function.
-
 #### 2.4.6 Headings and Labels · AA
 
 `✅ Supports` · `◐ Shared`
@@ -302,6 +246,27 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 
 ### ⚙️ Automated
 
+#### 1.4.4 Resize Text · AA
+
+`✅ Supports` · `◐ Shared`
+
+- The label, input value, and helper text are set in `rem`, so they scale with browser zoom or root font size rather than staying pixel-fixed.
+- A fixed-pixel container in the surrounding layout could clip the field at 200%. Covered by a Playwright test at 200% text size.
+
+#### 1.4.10 Reflow · AA
+
+`✅ Supports` · `◐ Shared`
+
+- The field is an inline-flex control with no fixed min-width of its own, and `fullWidth` makes it fill the container, so it reflows into a 320 CSS pixel viewport.
+- Real failures usually come from the surrounding layout, such as a row of fields that does not wrap. Covered by a Playwright test at a 320px viewport.
+
+#### 1.4.12 Text Spacing · AA
+
+`✅ Supports` · `◐ Shared`
+
+- The component has no styles that would block user overrides, so the WCAG text-spacing values apply to the label, value, and helper text. Covered by axe-core (`avoid-inline-spacing`).
+- The single-line input has a fixed height, so confirm by eye that a long label or helper text does not clip when the spacing values are applied. Covered by a Playwright test applying the WCAG text-spacing overrides.
+
 #### 2.1.1 Keyboard · A
 
 `✅ Supports` · `● Component`
@@ -321,12 +286,19 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 - The field is one focusable element in natural DOM order, with no positive `tabIndex`, so it is one correct focus stop. Covered by unit tests.
 - Order across fields is the surrounding form's responsibility.
 
+#### 2.5.2 Pointer Cancellation · A
+
+`✅ Supports` · `● Component`
+
+- The native `<input>` runs no command on the pointer down-event; clicking only moves focus, which is reversible by clicking elsewhere.
+- The component registers no custom pointer handler that would act before pointer-up. Covered by unit tests.
+
 #### 2.5.3 Label in Name · A
 
 `✅ Supports` · `◐ Shared`
 
 - With the `label` prop, the accessible name equals the visible label text, so the name contains the label. Covered by axe-core and unit tests.
-- An `aria-label` that differs from the visible label would break this. Keep the visible words in the name.
+- An `aria-label` that differs from the visible label would break this. Keep the visible words in the name. Covered by unit tests.
 
 #### 2.5.8 Target Size (Minimum) · AA
 

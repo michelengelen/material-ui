@@ -1157,5 +1157,40 @@ describe('<Button />', () => {
       await user.click(screen.getByRole('button', { name: 'Pressed' }));
       expect(handleClick.callCount).to.equal(1);
     });
+
+    describe('2.5.3 Label in Name', () => {
+      it('uses the visible text as the accessible name', () => {
+        render(<Button>Save changes</Button>);
+
+        // getByRole with `name` only resolves if the accessible name matches the label.
+        expect(screen.getByRole('button', { name: 'Save changes' })).not.to.equal(null);
+      });
+
+      it('keeps the visible words in the name when a decorative icon is present', () => {
+        render(<Button startIcon={<span data-testid="icon" />}>Delete</Button>);
+
+        expect(screen.getByRole('button', { name: 'Delete' })).not.to.equal(null);
+      });
+    });
+
+    describe('4.1.2 Name, Role, Value', () => {
+      it('renders a native button with the correct role', () => {
+        render(<Button>Submit</Button>);
+
+        expect(screen.getByRole('button', { name: 'Submit' })).to.have.tagName('button');
+      });
+
+      it('exposes the link role when rendered as an anchor', () => {
+        render(<Button href="/pricing">Pricing</Button>);
+
+        expect(screen.getByRole('link', { name: 'Pricing' })).to.have.tagName('a');
+      });
+
+      it('reflects the disabled state', () => {
+        render(<Button disabled>Submit</Button>);
+
+        expect(screen.getByRole('button')).to.have.property('disabled', true);
+      });
+    });
   });
 });

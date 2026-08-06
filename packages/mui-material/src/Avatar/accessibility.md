@@ -8,7 +8,7 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 | ⚠️ Partially Supports | 2     |
 | ❌ Does Not Support   | 0     |
 | ➖ Not Applicable     | 44    |
-| 🚩 Flagged            | 6/11  |
+| 🚩 Flagged            | 5/11  |
 
 ## Known gaps
 
@@ -73,21 +73,6 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 1. Select a letter avatar's initials with the mouse (or zoom in) and confirm they behave like real text (selectable, stay crisp), not an image.
 
 **Pass:** avatar initials and fallback are real text; the component renders no image of text.
-
-#### 1.4.10 Reflow · AA
-
-`🚩` · `✅ Supports` · `● Component`
-
-- The avatar is a fixed 40px box that establishes no horizontal layout, so at a 320 CSS pixel width (or 400% zoom) it cannot force two-dimensional scrolling; it scales and wraps with its container.
-
-**Manual testing steps**
-
-1. In a UI with avatars, set the window (or the DevTools device toolbar) to 320 CSS pixels wide.
-2. Confirm there is no horizontal scrolling and every avatar stays visible.
-
-**Pass:** content reflows with no two-dimensional scrolling. A single 40px avatar never triggers it.
-
-### 🔁 Hybrid
 
 #### 1.1.1 Non-text Content · A
 
@@ -178,20 +163,18 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 
 ### ⚙️ Automated
 
+#### 1.4.10 Reflow · AA
+
+`✅ Supports` · `● Component`
+
+- The avatar is a fixed 40px box that establishes no horizontal layout, so at a 320 CSS pixel width (or 400% zoom) it cannot force two-dimensional scrolling; it scales and wraps with its container. Covered by a Playwright test at a 320px viewport.
+
 #### 1.4.12 Text Spacing · AA
 
 `✅ Supports` · `● Component`
 
 - An avatar holds 1 to 2 character initials (or the `alt[0]` fallback) in a fixed 40px box with `overflow: hidden`, so the only text-legibility risk is clipping. The four spacing overrides do not enlarge one or two initials enough to overflow the box, so nothing is clipped.
-- Confirmed by a Playwright regression test in `test/regressions/index.test.js`.
-
-**Manual testing steps**
-
-1. On a two-character letter avatar, apply the WCAG text-spacing values: line-height 1.5, letter-spacing 0.12em, word-spacing 0.16em (paragraph spacing 2em does nothing here, with no paragraphs).
-2. Confirm the initials stay fully visible inside the 40px circle.
-3. Repeat at other avatar sizes to gauge sensitivity.
-
-**Pass:** documented initials and fallback text stay fully visible after applying the four overrides. Long author-supplied strings that already overflow at default spacing are out of scope.
+- Confirmed by a Playwright regression test in `test/regressions/index.test.js`. Covered by a Playwright test applying the WCAG text-spacing overrides.
 
 ## Not applicable
 

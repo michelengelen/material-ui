@@ -8,7 +8,7 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 | ⚠️ Partially Supports | 4     |
 | ❌ Does Not Support   | 0     |
 | ➖ Not Applicable     | 28    |
-| 🚩 Flagged            | 12/27 |
+| 🚩 Flagged            | 8/27  |
 
 ## Known gaps
 
@@ -49,20 +49,6 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 
 **Pass:** no instruction relies on "the green button" or "the button on the right" without naming it.
 
-#### 1.4.4 Resize Text · AA
-
-`🚩` · `✅ Supports` · `◐ Shared`
-
-- Typography is set in rem and em, so the label and button scale with browser zoom or font size rather than staying pixel-fixed.
-- A fixed-pixel container in the surrounding layout could clip at 200%.
-
-**Manual testing steps**
-
-1. In a UI with buttons, set browser zoom to 200% (<kbd>Ctrl</kbd> or <kbd>Cmd</kbd> and <kbd>+</kbd>).
-2. Confirm labels are fully visible and buttons still work.
-
-**Pass:** nothing is clipped or cut off at 200%.
-
 #### 1.4.5 Images of Text · AA
 
 `✅ Supports` · `○ Author`
@@ -75,19 +61,6 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 1. Select a button's label with the mouse (or zoom in) and confirm it behaves like real text (selectable, stays crisp), not an image.
 
 **Pass:** no button renders its label as an image of text (a logo with an accessible name is exempt).
-
-#### 1.4.10 Reflow · AA
-
-`🚩` · `✅ Supports` · `◐ Shared`
-
-- Labels wrap by default (the component sets no `white-space`), so a button reflows on its own. Horizontal overflow at 320 CSS pixels comes from the surrounding layout, such as a fixed-width button or a non-wrapping row.
-
-**Manual testing steps**
-
-1. In a UI with buttons, set the window (or the DevTools device toolbar) to 320 CSS pixels wide.
-2. Confirm there is no sideways scrolling and all button text is reachable.
-
-**Pass:** content reflows with no horizontal scroll, and long labels wrap.
 
 #### 2.4.11 Focus Not Obscured (Minimum) · AA
 
@@ -209,19 +182,6 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 
 **Pass:** border, focus indicator, and any meaningful icon are each at least `3:1`. Disabled and purely decorative parts are exempt.
 
-#### 1.4.12 Text Spacing · AA
-
-`🚩` · `✅ Supports` · `◐ Shared`
-
-- Labels wrap and the button height comes from padding, not a fixed height, so the WCAG text-spacing values grow the button without clipping.
-
-**Manual testing steps**
-
-1. On a button with a long label, apply the WCAG text-spacing values. The quickest way is to run this in the DevTools console: `document.head.insertAdjacentHTML('beforeend','<style>*{line-height:1.5!important;letter-spacing:.12em!important;word-spacing:.16em!important}</style>')`.
-2. Look for cut-off, clipped, or overlapping label text.
-
-**Pass:** all label text stays visible and the button still works.
-
 #### 2.4.4 Link Purpose (In Context) · A
 
 `✅ Supports` · `◐ Shared`
@@ -266,21 +226,6 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 
 **Pass:** every keyboard-focused button shows a visible indicator, including under `disableRipple`, `disableFocusRipple`, and `disableElevation`.
 
-#### 2.5.3 Label in Name · A
-
-`🚩` · `✅ Supports` · `◐ Shared`
-
-- The visible text is the accessible name: the children become the name, decorative MUI icons are hidden (a custom icon node is not, unless the author hides it), and `loadingPosition="center"` keeps the label in the name despite `color: transparent`.
-- An `aria-label` that omits or reorders the visible words breaks this. Compare the visible text to the computed name.
-
-**Manual testing steps**
-
-1. Open the accessibility tree (in Chrome DevTools: Elements panel, Accessibility tab) and select a button.
-2. Compare its computed Name to the words shown on screen.
-3. Optional: with Voice Control (macOS) or Dragon, say "click [label]" and confirm it activates.
-
-**Pass:** the visible text appears in the accessible name. An `aria-label` that drops or reorders the visible words fails.
-
 #### 3.3.2 Labels or Instructions · A
 
 `✅ Supports` · `◐ Shared`
@@ -311,6 +256,25 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 
 ### ⚙️ Automated
 
+#### 1.4.4 Resize Text · AA
+
+`✅ Supports` · `◐ Shared`
+
+- Typography is set in rem and em, so the label and button scale with browser zoom or font size rather than staying pixel-fixed.
+- A fixed-pixel container in the surrounding layout could clip at 200%. Covered by a Playwright test at 200% text size.
+
+#### 1.4.10 Reflow · AA
+
+`✅ Supports` · `◐ Shared`
+
+- Labels wrap by default (the component sets no `white-space`), so a button reflows on its own. Horizontal overflow at 320 CSS pixels comes from the surrounding layout, such as a fixed-width button or a non-wrapping row. Covered by a Playwright test at a 320px viewport.
+
+#### 1.4.12 Text Spacing · AA
+
+`✅ Supports` · `◐ Shared`
+
+- Labels wrap and the button height comes from padding, not a fixed height, so the WCAG text-spacing values grow the button without clipping. Covered by a Playwright test applying the WCAG text-spacing overrides.
+
 #### 2.1.1 Keyboard · A
 
 `✅ Supports` · `● Component`
@@ -338,7 +302,14 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 `✅ Supports` · `● Component`
 
 - Activation runs on `click`, fired on pointer-up over the target. `onMouseDown` only starts the ripple, and releasing off the target cancels, so nothing runs on the down event.
-- Confirmed by a unit test in [`./Button.test.js`](./Button.test.js) (`mousedown` does not activate; `click` does).
+- Confirmed by a unit test in [`./Button.test.js`](./Button.test.js) (`mousedown` does not activate; `click` does). Covered by unit tests.
+
+#### 2.5.3 Label in Name · A
+
+`✅ Supports` · `◐ Shared`
+
+- The visible text is the accessible name: the children become the name, decorative MUI icons are hidden (a custom icon node is not, unless the author hides it), and `loadingPosition="center"` keeps the label in the name despite `color: transparent`.
+- An `aria-label` that omits or reorders the visible words breaks this. Compare the visible text to the computed name. Covered by unit tests.
 
 #### 2.5.8 Target Size (Minimum) · AA
 

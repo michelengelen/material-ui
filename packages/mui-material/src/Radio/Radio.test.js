@@ -301,5 +301,29 @@ describe('<Radio />', () => {
       expect(radio).to.have.property('checked', true);
       expect(handleChange.callCount).to.equal(1);
     });
+
+    describe('4.1.2 Name, Role, Value', () => {
+      it('exposes the radio role, its value, and its accessible name', () => {
+        render(<FormControlLabel control={<Radio value="a" />} label="Option A" />);
+        const radio = screen.getByRole('radio', { name: 'Option A' });
+
+        expect(radio).to.have.property('value', 'a');
+      });
+
+      it('reflects the checked state', async () => {
+        const { user } = render(<Radio value="a" />);
+        const radio = screen.getByRole('radio');
+        expect(radio).to.have.property('checked', false);
+
+        await user.click(radio);
+        expect(radio).to.have.property('checked', true);
+      });
+
+      it('reflects the disabled state', () => {
+        render(<Radio value="a" disabled />);
+
+        expect(screen.getByRole('radio')).to.have.property('disabled', true);
+      });
+    });
   });
 });

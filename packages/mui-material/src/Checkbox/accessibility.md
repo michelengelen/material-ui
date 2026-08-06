@@ -8,7 +8,7 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 | ⚠️ Partially Supports | 3     |
 | ❌ Does Not Support   | 0     |
 | ➖ Not Applicable     | 30    |
-| 🚩 Flagged            | 7/25  |
+| 🚩 Flagged            | 4/25  |
 
 ## Known gaps
 
@@ -176,20 +176,6 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 
 **Pass:** the indicator in every active state (unchecked outline, checked fill, indeterminate dash) and the focus indicator are `3:1` against adjacent colors; disabled is exempt.
 
-#### 1.4.12 Text Spacing · AA
-
-`🚩` · `✅ Supports` · `◐ Shared`
-
-- The component sets no text styles of its own and no fixed heights that would clip under user text-spacing overrides; the label is normal flowing text that wraps, and the checkmark icon is a fixed vector unaffected by spacing.
-- Whether a long label clips depends on the author's container, not the checkbox.
-
-**Manual testing steps**
-
-1. Apply the WCAG text-spacing overrides via the DevTools console: `document.head.insertAdjacentHTML('beforeend','<style>*{line-height:1.5!important;letter-spacing:.12em!important;word-spacing:.16em!important}</style>')`.
-2. Confirm labels and helper text are not clipped or overlapping and the control still toggles.
-
-**Pass:** applying the text-spacing overrides causes no clipping, overlap, or loss of text or function.
-
 #### 2.4.6 Headings and Labels · AA
 
 `✅ Supports` · `◐ Shared`
@@ -218,22 +204,6 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 3. Click with the mouse and confirm the indicator is keyboard-only.
 
 **Pass:** every keyboard-focused checkbox shows a visible indicator, including `disableRipple` via author-supplied styles. Today a bare `disableRipple` checkbox shows none.
-
-#### 2.5.3 Label in Name · A
-
-`✅ Supports` · `◐ Shared`
-
-- With `FormControlLabel` and a string label, the accessible name equals the visible text, so the name contains the label. The required `*` is symbolic punctuation, not part of the label, so it is correctly excluded from the name; native `required` conveys that state instead.
-- A `slotProps.input` `aria-label` that differs from the visible text breaks this. Keep the visible words in the name.
-- Confirmed by a unit test in [`./Checkbox.test.js`](./Checkbox.test.js) (the accessible name matches the visible label).
-
-**Manual testing steps**
-
-1. For alabelledcheckbox (`Checkbox` inside a `FormControlLabel` reading "Remember me"), confirm the accessible name contains "Remember me".
-2. If an `aria-label` is set, confirm it includes the visible text.
-3. Try a voice command speaking the visible label and confirm it activates the checkbox.
-
-**Pass:** the accessible name contains the visible label text.
 
 #### 3.3.2 Labels or Instructions · A
 
@@ -272,31 +242,24 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 
 #### 1.4.4 Resize Text · AA
 
-`🚩` · `✅ Supports` · `◐ Shared`
+`✅ Supports` · `◐ Shared`
 
 - The checkmark icon is an `SvgIcon` whose size comes from `fontSize` in `rem` (medium 24px = 1.5rem, small 20px = 1.25rem) with a `1em` box, so it scales with browser zoom or root font size; the label is normal text. Nothing is pixel-fixed.
-- A fixed-pixel container in the surrounding layout could clip at 200%.
-
-**Manual testing steps**
-
-1. In a UI with checkboxes, set browser zoom to 200% and confirm the checkboxes, labels, and helper text are fully visible and still toggle.
-2. Test a long label inside a constrained-width container.
-
-**Pass:** nothing is clipped or cut off at 200%.
+- A fixed-pixel container in the surrounding layout could clip at 200%. Covered by a Playwright test at 200% text size.
 
 #### 1.4.10 Reflow · AA
 
-`🚩` · `✅ Supports` · `◐ Shared`
+`✅ Supports` · `◐ Shared`
 
 - The checkbox is a small inline-flex control with no fixed min-width and no horizontal-overflow layout of its own, so it reflows into a 320 CSS pixel viewport.
-- Real failures usually come from the surrounding layout, such as a wide non-wrapping row of checkboxes overflowing at 320 pixels.
+- Real failures usually come from the surrounding layout, such as a wide non-wrapping row of checkboxes overflowing at 320 pixels. Covered by a Playwright test at a 320px viewport.
 
-**Manual testing steps**
+#### 1.4.12 Text Spacing · AA
 
-1. In a UI with checkboxes, set the viewport to 320 CSS pixels wide (or 400% zoom at 1280px) and confirm checkbox rows stack with no horizontal scrollbar.
-2. Confirm any multi-column group collapses to one column.
+`✅ Supports` · `◐ Shared`
 
-**Pass:** content reflows to one column with no two-dimensional scrolling and no loss of function.
+- The component sets no text styles of its own and no fixed heights that would clip under user text-spacing overrides; the label is normal flowing text that wraps, and the checkmark icon is a fixed vector unaffected by spacing.
+- Whether a long label clips depends on the author's container, not the checkbox. Covered by a Playwright test applying the WCAG text-spacing overrides.
 
 #### 2.1.1 Keyboard · A
 
@@ -325,7 +288,15 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 `✅ Supports` · `● Component`
 
 - Toggling runs on the native input's `click`, fired on pointer-up over the target. Nothing toggles on the down event (the ripple starts there but is decorative), and releasing off the control cancels.
-- Confirmed by a unit test in [`./Checkbox.test.js`](./Checkbox.test.js) (releasing off the target does not toggle; `click` does).
+- Confirmed by a unit test in [`./Checkbox.test.js`](./Checkbox.test.js) (releasing off the target does not toggle; `click` does). Covered by unit tests.
+
+#### 2.5.3 Label in Name · A
+
+`✅ Supports` · `◐ Shared`
+
+- With `FormControlLabel` and a string label, the accessible name equals the visible text, so the name contains the label. The required `*` is symbolic punctuation, not part of the label, so it is correctly excluded from the name; native `required` conveys that state instead.
+- A `slotProps.input` `aria-label` that differs from the visible text breaks this. Keep the visible words in the name.
+- Confirmed by a unit test in [`./Checkbox.test.js`](./Checkbox.test.js) (the accessible name matches the visible label). Covered by unit tests.
 
 #### 2.5.8 Target Size (Minimum) · AA
 

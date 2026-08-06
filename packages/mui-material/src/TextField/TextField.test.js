@@ -556,5 +556,31 @@ describe('<TextField />', () => {
         'true',
       );
     });
+
+    it('2.5.2 Pointer Cancellation: the down-event runs no command and focus is reversible', async () => {
+      const handleChange = spy();
+      const { user } = render(
+        <React.Fragment>
+          <TextField label="Email" onChange={handleChange} />
+          <button type="button">elsewhere</button>
+        </React.Fragment>,
+      );
+      const input = screen.getByRole('textbox', { name: 'Email' });
+
+      // Pressing on the field and releasing elsewhere commits nothing.
+      await user.pointer([
+        { keys: '[MouseLeft>]', target: input },
+        { target: screen.getByRole('button', { name: 'elsewhere' }) },
+        { keys: '[/MouseLeft]' },
+      ]);
+      expect(handleChange.callCount).to.equal(0);
+      expect(input).to.have.property('value', '');
+
+      // Clicking only moves focus, and that is reversible by clicking elsewhere.
+      await user.click(input);
+      expect(input).toHaveFocus();
+      await user.click(screen.getByRole('button', { name: 'elsewhere' }));
+      expect(input).not.toHaveFocus();
+    });
   });
 });

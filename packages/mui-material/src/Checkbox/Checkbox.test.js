@@ -411,5 +411,30 @@ describe('<Checkbox />', () => {
       expect(checkbox).to.have.property('checked', false);
       expect(handleChange.callCount).to.equal(0);
     });
+
+    describe('4.1.2 Name, Role, Value', () => {
+      // The `indeterminate` state is a known gap (it sets aria-checked="mixed" on a
+      // native checkbox whose `checked` is false); these cover the parts that pass.
+      it('exposes the checkbox role and its accessible name', () => {
+        render(<FormControlLabel control={<Checkbox />} label="Subscribe" />);
+
+        expect(screen.getByRole('checkbox', { name: 'Subscribe' })).not.to.equal(null);
+      });
+
+      it('reflects the checked state and notifies on change', async () => {
+        const { user } = render(<Checkbox />);
+        const checkbox = screen.getByRole('checkbox');
+        expect(checkbox).to.have.property('checked', false);
+
+        await user.click(checkbox);
+        expect(checkbox).to.have.property('checked', true);
+      });
+
+      it('reflects the disabled state', () => {
+        render(<Checkbox disabled />);
+
+        expect(screen.getByRole('checkbox')).to.have.property('disabled', true);
+      });
+    });
   });
 });

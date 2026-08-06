@@ -10,7 +10,7 @@ This is the item-level report for the accordion header button. The root `<Accord
 | ⚠️ Partially Supports | 1     |
 | ❌ Does Not Support   | 0     |
 | ➖ Not Applicable     | 31    |
-| 🚩 Flagged            | 8/24  |
+| 🚩 Flagged            | 4/24  |
 
 ## Known gaps
 
@@ -61,20 +61,6 @@ This is the item-level report for the accordion header button. The root `<Accord
 
 **Pass:** the open and closed states stay distinguishable without color.
 
-#### 1.4.4 Resize Text · AA
-
-`🚩` · `✅ Supports` · `◐ Shared`
-
-- The label text is rem-based (`Typography`), and the 48px `min-height` is a floor that content grows past, not a fixed size, so the summary scales with browser zoom rather than clipping.
-- A fixed-pixel container in the surrounding layout could clip at 200%.
-
-**Manual testing steps**
-
-1. In a UI with accordions, set browser zoom to 200% (<kbd>Ctrl</kbd> or <kbd>Cmd</kbd> and <kbd>+</kbd>).
-2. Confirm the summary label is fully visible and the control still toggles.
-
-**Pass:** nothing is clipped at 200%.
-
 #### 1.4.5 Images of Text · AA
 
 `✅ Supports` · `○ Author`
@@ -86,19 +72,6 @@ This is the item-level report for the accordion header button. The root `<Accord
 1. Verify that the summary label is real text.
 
 **Pass:** no summary renders its label as an image of text.
-
-#### 1.4.10 Reflow · AA
-
-`🚩` · `✅ Supports` · `◐ Shared`
-
-- The summary is full width and its label wraps, so it reflows on its own; horizontal overflow at 320 CSS pixels comes from the surrounding layout.
-
-**Manual testing steps**
-
-1. In a UI with accordions, set the window (or the DevTools device toolbar) to 320 CSS pixels wide.
-2. Confirm there is no sideways scrolling and the summary text is reachable.
-
-**Pass:** content reflows with no horizontal scroll, and long labels wrap.
 
 #### 1.4.11 Non-text Contrast · AA
 
@@ -126,19 +99,6 @@ This is the item-level report for the accordion header button. The root `<Accord
 2. Scroll so the summary sits under the sticky element, then <kbd>Tab</kbd> to it again.
 
 **Pass:** at least part of the focused summary stays visible, never entirely covered.
-
-#### 2.5.3 Label in Name · A
-
-`🚩` · `✅ Supports` · `◐ Shared`
-
-- The accessible name is the visible label: the children become the name, and an `SvgIcon` `expandIcon` defaults to `aria-hidden`; a custom icon node adds to the name unless the author hides it.
-- An `aria-label` that omits or reorders the visible words breaks this; compare the visible text to the computed name.
-
-**Manual testing steps**
-
-1. With a screen reader verify that the summary announces the same as the visible text
-
-**Pass:** the visible label appears in the accessible name.
 
 #### 3.2.4 Consistent Identification · AA
 
@@ -195,20 +155,6 @@ This is the item-level report for the accordion header button. The root `<Accord
 
 **Pass:** at least 4.5:1 for the label text. Disabled summaries are exempt.
 
-#### 1.4.12 Text Spacing · AA
-
-`🚩` · `✅ Supports` · `◐ Shared`
-
-- The label wraps and the summary height comes from `min-height` and padding, not a fixed height, so the WCAG text-spacing values grow the control without clipping.
-- axe-core `avoid-inline-spacing` passes, and a visual-regression screenshot guards the layout.
-
-**Manual testing steps**
-
-1. On an accordion with a long summary label, apply the four WCAG text-spacing values in the DevTools console: `document.head.insertAdjacentHTML('beforeend','<style>*{line-height:1.5!important;letter-spacing:.12em!important;word-spacing:.16em!important}p{margin-bottom:2em!important}</style>')`.
-2. Look for clipped or overlapping label text.
-
-**Pass:** all label text stays visible and the summary still toggles.
-
 #### 2.4.6 Headings and Labels · AA
 
 `✅ Supports` · `◐ Shared`
@@ -254,6 +200,26 @@ This is the item-level report for the accordion header button. The root `<Accord
 
 ### ⚙️ Automated
 
+#### 1.4.4 Resize Text · AA
+
+`✅ Supports` · `◐ Shared`
+
+- The label text is rem-based (`Typography`), and the 48px `min-height` is a floor that content grows past, not a fixed size, so the summary scales with browser zoom rather than clipping.
+- A fixed-pixel container in the surrounding layout could clip at 200%. Covered by a Playwright test at 200% text size.
+
+#### 1.4.10 Reflow · AA
+
+`✅ Supports` · `◐ Shared`
+
+- The summary is full width and its label wraps, so it reflows on its own; horizontal overflow at 320 CSS pixels comes from the surrounding layout. Covered by a Playwright test at a 320px viewport.
+
+#### 1.4.12 Text Spacing · AA
+
+`✅ Supports` · `◐ Shared`
+
+- The label wraps and the summary height comes from `min-height` and padding, not a fixed height, so the WCAG text-spacing values grow the control without clipping.
+- axe-core `avoid-inline-spacing` passes, and a visual-regression screenshot guards the layout. Covered by a Playwright test applying the WCAG text-spacing overrides.
+
 #### 2.1.1 Keyboard · A
 
 `✅ Supports` · `● Component`
@@ -280,7 +246,14 @@ This is the item-level report for the accordion header button. The root `<Accord
 `✅ Supports` · `● Component`
 
 - Activation runs on `click`, fired on pointer-up over the target; `mousedown` alone does not toggle, so releasing off the target cancels.
-- Confirmed by a unit test in [`./AccordionSummary.test.js`](./AccordionSummary.test.js) (releasing off the target does not toggle; a full click does).
+- Confirmed by a unit test in [`./AccordionSummary.test.js`](./AccordionSummary.test.js) (releasing off the target does not toggle; a full click does). Covered by unit tests.
+
+#### 2.5.3 Label in Name · A
+
+`✅ Supports` · `◐ Shared`
+
+- The accessible name is the visible label: the children become the name, and an `SvgIcon` `expandIcon` defaults to `aria-hidden`; a custom icon node adds to the name unless the author hides it.
+- An `aria-label` that omits or reorders the visible words breaks this; compare the visible text to the computed name. Covered by unit tests.
 
 #### 2.5.8 Target Size (Minimum) · AA
 

@@ -7,7 +7,7 @@
     "doesNotSupport": 0,
     "notApplicable": 387,
     "inherited": 43,
-    "flagged": 75
+    "flagged": 46
   },
   "criteria": [
     {
@@ -87,7 +87,7 @@
       "name": "Reflow",
       "level": "AA",
       "conformance": "Supports",
-      "flagged": true,
+      "flagged": false,
       "affected": []
     },
     {
@@ -113,7 +113,7 @@
       "name": "Text Spacing",
       "level": "AA",
       "conformance": "Supports",
-      "flagged": true,
+      "flagged": false,
       "affected": []
     },
     {
@@ -193,7 +193,7 @@
       "name": "Pointer Cancellation",
       "level": "A",
       "conformance": "Supports",
-      "flagged": true,
+      "flagged": false,
       "affected": []
     },
     {
@@ -201,7 +201,7 @@
       "name": "Label in Name",
       "level": "A",
       "conformance": "Supports",
-      "flagged": true,
+      "flagged": false,
       "affected": []
     },
     {
@@ -286,7 +286,7 @@
         "doesNotSupport": "0",
         "notApplicable": "31",
         "inherited": "5",
-        "flagged": "6/19"
+        "flagged": "3/19"
       },
       "gaps": [
         "Inherits: ⚠️ **1.4.11 Non-text Contrast** (the summary focus indicator) from [AccordionSummary](../AccordionSummary/accessibility.md)."
@@ -320,15 +320,6 @@
           "flagged": true
         },
         {
-          "number": "1.4.4",
-          "name": "Resize Text",
-          "level": "AA",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Manual",
-          "flagged": true
-        },
-        {
           "number": "1.4.5",
           "name": "Images of Text",
           "level": "AA",
@@ -336,15 +327,6 @@
           "responsibility": "Author",
           "group": "Manual",
           "flagged": false
-        },
-        {
-          "number": "1.4.10",
-          "name": "Reflow",
-          "level": "AA",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Manual",
-          "flagged": true
         },
         {
           "number": "2.4.11",
@@ -392,21 +374,39 @@
           "flagged": false
         },
         {
-          "number": "1.4.12",
-          "name": "Text Spacing",
-          "level": "AA",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Hybrid",
-          "flagged": true
-        },
-        {
           "number": "4.1.2",
           "name": "Name, Role, Value",
           "level": "A",
           "conformance": "Supports",
           "responsibility": "Shared",
           "group": "Hybrid",
+          "flagged": false
+        },
+        {
+          "number": "1.4.4",
+          "name": "Resize Text",
+          "level": "AA",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
+          "flagged": false
+        },
+        {
+          "number": "1.4.10",
+          "name": "Reflow",
+          "level": "AA",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
+          "flagged": false
+        },
+        {
+          "number": "1.4.12",
+          "name": "Text Spacing",
+          "level": "AA",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
           "flagged": false
         },
         {
@@ -471,8 +471,8 @@
         "supports": 19,
         "partiallySupports": 0,
         "doesNotSupport": 0,
-        "verified": 13,
-        "automated": 6
+        "verified": 16,
+        "automated": 9
       }
     },
     {
@@ -482,7 +482,7 @@
         "partiallySupports": "1",
         "doesNotSupport": "0",
         "notApplicable": "31",
-        "flagged": "8/24"
+        "flagged": "4/24"
       },
       "gaps": [
         "⚠️ **1.4.11 Non-text Contrast.** The keyboard-focus indicator is only a background tint (`action.focus`), about 1.3:1 against the adjacent `paper` surface, below the 3:1 minimum."
@@ -516,15 +516,6 @@
           "flagged": true
         },
         {
-          "number": "1.4.4",
-          "name": "Resize Text",
-          "level": "AA",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Manual",
-          "flagged": true
-        },
-        {
           "number": "1.4.5",
           "name": "Images of Text",
           "level": "AA",
@@ -532,15 +523,6 @@
           "responsibility": "Author",
           "group": "Manual",
           "flagged": false
-        },
-        {
-          "number": "1.4.10",
-          "name": "Reflow",
-          "level": "AA",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Manual",
-          "flagged": true
         },
         {
           "number": "1.4.11",
@@ -559,15 +541,6 @@
           "responsibility": "Author",
           "group": "Manual",
           "flagged": false
-        },
-        {
-          "number": "2.5.3",
-          "name": "Label in Name",
-          "level": "A",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Manual",
-          "flagged": true
         },
         {
           "number": "3.2.4",
@@ -606,15 +579,6 @@
           "flagged": true
         },
         {
-          "number": "1.4.12",
-          "name": "Text Spacing",
-          "level": "AA",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Hybrid",
-          "flagged": true
-        },
-        {
           "number": "2.4.6",
           "name": "Headings and Labels",
           "level": "AA",
@@ -639,6 +603,33 @@
           "conformance": "Supports",
           "responsibility": "Shared",
           "group": "Hybrid",
+          "flagged": false
+        },
+        {
+          "number": "1.4.4",
+          "name": "Resize Text",
+          "level": "AA",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
+          "flagged": false
+        },
+        {
+          "number": "1.4.10",
+          "name": "Reflow",
+          "level": "AA",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
+          "flagged": false
+        },
+        {
+          "number": "1.4.12",
+          "name": "Text Spacing",
+          "level": "AA",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
           "flagged": false
         },
         {
@@ -678,6 +669,15 @@
           "flagged": false
         },
         {
+          "number": "2.5.3",
+          "name": "Label in Name",
+          "level": "A",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
+          "flagged": false
+        },
+        {
           "number": "2.5.8",
           "name": "Target Size (Minimum)",
           "level": "AA",
@@ -712,8 +712,8 @@
         "supports": 23,
         "partiallySupports": 1,
         "doesNotSupport": 0,
-        "verified": 16,
-        "automated": 7
+        "verified": 20,
+        "automated": 11
       }
     },
     {
@@ -723,7 +723,7 @@
         "partiallySupports": "2",
         "doesNotSupport": "0",
         "notApplicable": "44",
-        "flagged": "6/11"
+        "flagged": "5/11"
       },
       "gaps": [
         "⚠️ **1.4.3 Contrast (Minimum).** Default letter and fallback avatars render white text on `grey[400]` (about 1.9:1), and the `deepOrange[500]` example is 3.16:1, both below 4.5:1; arbitrary `stringToColor` backgrounds are unguaranteed.",
@@ -767,21 +767,12 @@
           "flagged": false
         },
         {
-          "number": "1.4.10",
-          "name": "Reflow",
-          "level": "AA",
-          "conformance": "Supports",
-          "responsibility": "Component",
-          "group": "Manual",
-          "flagged": true
-        },
-        {
           "number": "1.1.1",
           "name": "Non-text Content",
           "level": "A",
           "conformance": "Supports",
           "responsibility": "Shared",
-          "group": "Hybrid",
+          "group": "Manual",
           "flagged": false
         },
         {
@@ -790,7 +781,7 @@
           "level": "A",
           "conformance": "Supports",
           "responsibility": "Shared",
-          "group": "Hybrid",
+          "group": "Manual",
           "flagged": false
         },
         {
@@ -799,7 +790,7 @@
           "level": "A",
           "conformance": "Supports",
           "responsibility": "Shared",
-          "group": "Hybrid",
+          "group": "Manual",
           "flagged": true
         },
         {
@@ -808,7 +799,7 @@
           "level": "AA",
           "conformance": "Partially Supports",
           "responsibility": "Shared",
-          "group": "Hybrid",
+          "group": "Manual",
           "flagged": false
         },
         {
@@ -817,8 +808,17 @@
           "level": "AA",
           "conformance": "Partially Supports",
           "responsibility": "Shared",
-          "group": "Hybrid",
+          "group": "Manual",
           "flagged": true
+        },
+        {
+          "number": "1.4.10",
+          "name": "Reflow",
+          "level": "AA",
+          "conformance": "Supports",
+          "responsibility": "Component",
+          "group": "Automated",
+          "flagged": false
         },
         {
           "number": "1.4.12",
@@ -837,8 +837,8 @@
         "supports": 9,
         "partiallySupports": 2,
         "doesNotSupport": 0,
-        "verified": 5,
-        "automated": 1
+        "verified": 6,
+        "automated": 2
       }
     },
     {
@@ -848,7 +848,7 @@
         "partiallySupports": "4",
         "doesNotSupport": "0",
         "notApplicable": "28",
-        "flagged": "12/27"
+        "flagged": "8/27"
       },
       "gaps": [
         "⚠️ **1.4.3 Contrast (Minimum).** `info` and `warning` contained buttons fall short of 4.5:1.",
@@ -876,15 +876,6 @@
           "flagged": true
         },
         {
-          "number": "1.4.4",
-          "name": "Resize Text",
-          "level": "AA",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Manual",
-          "flagged": true
-        },
-        {
           "number": "1.4.5",
           "name": "Images of Text",
           "level": "AA",
@@ -892,15 +883,6 @@
           "responsibility": "Author",
           "group": "Manual",
           "flagged": false
-        },
-        {
-          "number": "1.4.10",
-          "name": "Reflow",
-          "level": "AA",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Manual",
-          "flagged": true
         },
         {
           "number": "2.4.11",
@@ -975,15 +957,6 @@
           "flagged": true
         },
         {
-          "number": "1.4.12",
-          "name": "Text Spacing",
-          "level": "AA",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Hybrid",
-          "flagged": true
-        },
-        {
           "number": "2.4.4",
           "name": "Link Purpose (In Context)",
           "level": "A",
@@ -1011,15 +984,6 @@
           "flagged": true
         },
         {
-          "number": "2.5.3",
-          "name": "Label in Name",
-          "level": "A",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Hybrid",
-          "flagged": true
-        },
-        {
           "number": "3.3.2",
           "name": "Labels or Instructions",
           "level": "A",
@@ -1035,6 +999,33 @@
           "conformance": "Supports",
           "responsibility": "Shared",
           "group": "Hybrid",
+          "flagged": false
+        },
+        {
+          "number": "1.4.4",
+          "name": "Resize Text",
+          "level": "AA",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
+          "flagged": false
+        },
+        {
+          "number": "1.4.10",
+          "name": "Reflow",
+          "level": "AA",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
+          "flagged": false
+        },
+        {
+          "number": "1.4.12",
+          "name": "Text Spacing",
+          "level": "AA",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
           "flagged": false
         },
         {
@@ -1074,6 +1065,15 @@
           "flagged": false
         },
         {
+          "number": "2.5.3",
+          "name": "Label in Name",
+          "level": "A",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
+          "flagged": false
+        },
+        {
           "number": "2.5.8",
           "name": "Target Size (Minimum)",
           "level": "AA",
@@ -1108,8 +1108,8 @@
         "supports": 23,
         "partiallySupports": 4,
         "doesNotSupport": 0,
-        "verified": 15,
-        "automated": 7
+        "verified": 19,
+        "automated": 11
       }
     },
     {
@@ -1119,7 +1119,7 @@
         "partiallySupports": "3",
         "doesNotSupport": "0",
         "notApplicable": "30",
-        "flagged": "7/25"
+        "flagged": "4/25"
       },
       "gaps": [
         "⚠️ **1.4.11 Non-text Contrast.** The default checkmark icons clear 3:1 (`warning` is the tightest at 3.11:1), but the keyboard focus indicator is untested and `disableRipple`/`disableFocusRipple` or custom icons can drop below 3:1 (a faint custom unchecked box can be about 1.1:1 against the page).",
@@ -1218,15 +1218,6 @@
           "flagged": true
         },
         {
-          "number": "1.4.12",
-          "name": "Text Spacing",
-          "level": "AA",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Hybrid",
-          "flagged": true
-        },
-        {
           "number": "2.4.6",
           "name": "Headings and Labels",
           "level": "AA",
@@ -1243,15 +1234,6 @@
           "responsibility": "Component",
           "group": "Hybrid",
           "flagged": true
-        },
-        {
-          "number": "2.5.3",
-          "name": "Label in Name",
-          "level": "A",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Hybrid",
-          "flagged": false
         },
         {
           "number": "3.3.2",
@@ -1278,7 +1260,7 @@
           "conformance": "Supports",
           "responsibility": "Shared",
           "group": "Automated",
-          "flagged": true
+          "flagged": false
         },
         {
           "number": "1.4.10",
@@ -1287,7 +1269,16 @@
           "conformance": "Supports",
           "responsibility": "Shared",
           "group": "Automated",
-          "flagged": true
+          "flagged": false
+        },
+        {
+          "number": "1.4.12",
+          "name": "Text Spacing",
+          "level": "AA",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
+          "flagged": false
         },
         {
           "number": "2.1.1",
@@ -1326,6 +1317,15 @@
           "flagged": false
         },
         {
+          "number": "2.5.3",
+          "name": "Label in Name",
+          "level": "A",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
+          "flagged": false
+        },
+        {
           "number": "2.5.8",
           "name": "Target Size (Minimum)",
           "level": "AA",
@@ -1360,8 +1360,8 @@
         "supports": 22,
         "partiallySupports": 3,
         "doesNotSupport": 0,
-        "verified": 18,
-        "automated": 9
+        "verified": 21,
+        "automated": 11
       }
     },
     {
@@ -1380,6 +1380,15 @@
       ],
       "criteria": [
         {
+          "number": "1.4.1",
+          "name": "Use of Color",
+          "level": "A",
+          "conformance": "Supports",
+          "responsibility": "Component",
+          "group": "Manual",
+          "flagged": true
+        },
+        {
           "number": "1.3.3",
           "name": "Sensory Characteristics",
           "level": "A",
@@ -1387,15 +1396,6 @@
           "responsibility": "Author",
           "group": "Manual",
           "flagged": false
-        },
-        {
-          "number": "1.4.10",
-          "name": "Reflow",
-          "level": "AA",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Manual",
-          "flagged": true
         },
         {
           "number": "1.4.11",
@@ -1470,11 +1470,11 @@
           "flagged": false
         },
         {
-          "number": "1.4.1",
-          "name": "Use of Color",
-          "level": "A",
+          "number": "1.4.10",
+          "name": "Reflow",
+          "level": "AA",
           "conformance": "Supports",
-          "responsibility": "Component",
+          "responsibility": "Shared",
           "group": "Automated",
           "flagged": false
         }
@@ -1497,7 +1497,7 @@
         "partiallySupports": "2",
         "doesNotSupport": "0",
         "notApplicable": "30",
-        "flagged": "6/25"
+        "flagged": "3/25"
       },
       "gaps": [
         "⚠️ **1.4.11 Non-text Contrast.** The default dot and circle clear 3:1 (`warning` is the tightest at 3.11:1), but the keyboard focus indicator is untested and `disableRipple`/`disableFocusRipple` or custom icons can drop below 3:1 (the `CustomizedRadios` unchecked circle is about 1.1:1 against the page).",
@@ -1523,15 +1523,6 @@
           "flagged": false
         },
         {
-          "number": "1.4.4",
-          "name": "Resize Text",
-          "level": "AA",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Manual",
-          "flagged": true
-        },
-        {
           "number": "1.4.5",
           "name": "Images of Text",
           "level": "AA",
@@ -1539,15 +1530,6 @@
           "responsibility": "Author",
           "group": "Manual",
           "flagged": false
-        },
-        {
-          "number": "1.4.10",
-          "name": "Reflow",
-          "level": "AA",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Manual",
-          "flagged": true
         },
         {
           "number": "2.4.11",
@@ -1622,15 +1604,6 @@
           "flagged": true
         },
         {
-          "number": "1.4.12",
-          "name": "Text Spacing",
-          "level": "AA",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Hybrid",
-          "flagged": true
-        },
-        {
           "number": "2.4.6",
           "name": "Headings and Labels",
           "level": "AA",
@@ -1649,8 +1622,8 @@
           "flagged": true
         },
         {
-          "number": "2.5.3",
-          "name": "Label in Name",
+          "number": "4.1.2",
+          "name": "Name, Role, Value",
           "level": "A",
           "conformance": "Supports",
           "responsibility": "Shared",
@@ -1658,12 +1631,30 @@
           "flagged": false
         },
         {
-          "number": "4.1.2",
-          "name": "Name, Role, Value",
-          "level": "A",
+          "number": "1.4.4",
+          "name": "Resize Text",
+          "level": "AA",
           "conformance": "Supports",
           "responsibility": "Shared",
-          "group": "Hybrid",
+          "group": "Automated",
+          "flagged": false
+        },
+        {
+          "number": "1.4.10",
+          "name": "Reflow",
+          "level": "AA",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
+          "flagged": false
+        },
+        {
+          "number": "1.4.12",
+          "name": "Text Spacing",
+          "level": "AA",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
           "flagged": false
         },
         {
@@ -1703,6 +1694,15 @@
           "flagged": false
         },
         {
+          "number": "2.5.3",
+          "name": "Label in Name",
+          "level": "A",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
+          "flagged": false
+        },
+        {
           "number": "2.5.8",
           "name": "Target Size (Minimum)",
           "level": "AA",
@@ -1737,8 +1737,8 @@
         "supports": 23,
         "partiallySupports": 2,
         "doesNotSupport": 0,
-        "verified": 19,
-        "automated": 7
+        "verified": 22,
+        "automated": 11
       }
     },
     {
@@ -1835,7 +1835,7 @@
         "partiallySupports": "2",
         "doesNotSupport": "0",
         "notApplicable": "30",
-        "flagged": "6/25"
+        "flagged": "3/25"
       },
       "gaps": [
         "⚠️ **1.4.11 Non-text Contrast.** In light mode the thumb and track stay under 3:1 (the off-state white thumb is about 2.7:1 on the gray track, the track about 2.7:1 on the page, and each checked color 1.8:1 to 2.6:1 thumb-on-track); the focus indicator is also untested and `disableRipple` removes it.",
@@ -1861,15 +1861,6 @@
           "flagged": false
         },
         {
-          "number": "1.4.4",
-          "name": "Resize Text",
-          "level": "AA",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Manual",
-          "flagged": true
-        },
-        {
           "number": "1.4.5",
           "name": "Images of Text",
           "level": "AA",
@@ -1877,15 +1868,6 @@
           "responsibility": "Author",
           "group": "Manual",
           "flagged": false
-        },
-        {
-          "number": "1.4.10",
-          "name": "Reflow",
-          "level": "AA",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Manual",
-          "flagged": true
         },
         {
           "number": "2.4.11",
@@ -1960,15 +1942,6 @@
           "flagged": true
         },
         {
-          "number": "1.4.12",
-          "name": "Text Spacing",
-          "level": "AA",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Hybrid",
-          "flagged": true
-        },
-        {
           "number": "2.4.6",
           "name": "Headings and Labels",
           "level": "AA",
@@ -1987,8 +1960,8 @@
           "flagged": true
         },
         {
-          "number": "2.5.3",
-          "name": "Label in Name",
+          "number": "4.1.2",
+          "name": "Name, Role, Value",
           "level": "A",
           "conformance": "Supports",
           "responsibility": "Shared",
@@ -1996,12 +1969,30 @@
           "flagged": false
         },
         {
-          "number": "4.1.2",
-          "name": "Name, Role, Value",
-          "level": "A",
+          "number": "1.4.4",
+          "name": "Resize Text",
+          "level": "AA",
           "conformance": "Supports",
           "responsibility": "Shared",
-          "group": "Hybrid",
+          "group": "Automated",
+          "flagged": false
+        },
+        {
+          "number": "1.4.10",
+          "name": "Reflow",
+          "level": "AA",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
+          "flagged": false
+        },
+        {
+          "number": "1.4.12",
+          "name": "Text Spacing",
+          "level": "AA",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
           "flagged": false
         },
         {
@@ -2041,6 +2032,15 @@
           "flagged": false
         },
         {
+          "number": "2.5.3",
+          "name": "Label in Name",
+          "level": "A",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
+          "flagged": false
+        },
+        {
           "number": "2.5.8",
           "name": "Target Size (Minimum)",
           "level": "AA",
@@ -2075,8 +2075,8 @@
         "supports": 23,
         "partiallySupports": 2,
         "doesNotSupport": 0,
-        "verified": 19,
-        "automated": 7
+        "verified": 22,
+        "automated": 11
       }
     },
     {
@@ -2086,7 +2086,7 @@
         "partiallySupports": "3",
         "doesNotSupport": "0",
         "notApplicable": "27",
-        "flagged": "9/28"
+        "flagged": "5/28"
       },
       "gaps": [
         "⚠️ **1.4.3 Contrast (Minimum).** The placeholder (about 2.55:1), the focused `warning` label (3.11:1), and the focused color labels on the filled surface (`primary` 4.04:1) fall short of 4.5:1.",
@@ -2113,15 +2113,6 @@
           "flagged": false
         },
         {
-          "number": "1.4.4",
-          "name": "Resize Text",
-          "level": "AA",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Manual",
-          "flagged": true
-        },
-        {
           "number": "1.4.5",
           "name": "Images of Text",
           "level": "AA",
@@ -2129,15 +2120,6 @@
           "responsibility": "Author",
           "group": "Manual",
           "flagged": false
-        },
-        {
-          "number": "1.4.10",
-          "name": "Reflow",
-          "level": "AA",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Manual",
-          "flagged": true
         },
         {
           "number": "1.4.11",
@@ -2165,15 +2147,6 @@
           "responsibility": "Author",
           "group": "Manual",
           "flagged": false
-        },
-        {
-          "number": "2.5.2",
-          "name": "Pointer Cancellation",
-          "level": "A",
-          "conformance": "Supports",
-          "responsibility": "Component",
-          "group": "Manual",
-          "flagged": true
         },
         {
           "number": "3.2.4",
@@ -2239,15 +2212,6 @@
           "flagged": false
         },
         {
-          "number": "1.4.12",
-          "name": "Text Spacing",
-          "level": "AA",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Hybrid",
-          "flagged": true
-        },
-        {
           "number": "2.4.6",
           "name": "Headings and Labels",
           "level": "AA",
@@ -2275,6 +2239,33 @@
           "flagged": false
         },
         {
+          "number": "1.4.4",
+          "name": "Resize Text",
+          "level": "AA",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
+          "flagged": false
+        },
+        {
+          "number": "1.4.10",
+          "name": "Reflow",
+          "level": "AA",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
+          "flagged": false
+        },
+        {
+          "number": "1.4.12",
+          "name": "Text Spacing",
+          "level": "AA",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
+          "flagged": false
+        },
+        {
           "number": "2.1.1",
           "name": "Keyboard",
           "level": "A",
@@ -2298,6 +2289,15 @@
           "level": "A",
           "conformance": "Supports",
           "responsibility": "Shared",
+          "group": "Automated",
+          "flagged": false
+        },
+        {
+          "number": "2.5.2",
+          "name": "Pointer Cancellation",
+          "level": "A",
+          "conformance": "Supports",
+          "responsibility": "Component",
           "group": "Automated",
           "flagged": false
         },
@@ -2354,8 +2354,8 @@
         "supports": 25,
         "partiallySupports": 3,
         "doesNotSupport": 0,
-        "verified": 19,
-        "automated": 8
+        "verified": 23,
+        "automated": 12
       }
     },
     {
@@ -2365,7 +2365,7 @@
         "partiallySupports": "4",
         "doesNotSupport": "0",
         "notApplicable": "31",
-        "flagged": "5/24"
+        "flagged": "2/24"
       },
       "gaps": [
         "⚠️ **1.4.1 Use of Color.** For the color variants (`primary`, `error`, `info`, `success`), the selected and unselected labels are near-identical in grayscale lightness, so the pressed state is conveyed almost entirely by hue.",
@@ -2393,15 +2393,6 @@
           "flagged": false
         },
         {
-          "number": "1.4.4",
-          "name": "Resize Text",
-          "level": "AA",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Manual",
-          "flagged": true
-        },
-        {
           "number": "1.4.5",
           "name": "Images of Text",
           "level": "AA",
@@ -2409,15 +2400,6 @@
           "responsibility": "Author",
           "group": "Manual",
           "flagged": false
-        },
-        {
-          "number": "1.4.10",
-          "name": "Reflow",
-          "level": "AA",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Manual",
-          "flagged": true
         },
         {
           "number": "2.4.11",
@@ -2483,15 +2465,6 @@
           "flagged": true
         },
         {
-          "number": "1.4.12",
-          "name": "Text Spacing",
-          "level": "AA",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Hybrid",
-          "flagged": true
-        },
-        {
           "number": "2.4.6",
           "name": "Headings and Labels",
           "level": "AA",
@@ -2510,8 +2483,8 @@
           "flagged": false
         },
         {
-          "number": "2.5.3",
-          "name": "Label in Name",
+          "number": "4.1.2",
+          "name": "Name, Role, Value",
           "level": "A",
           "conformance": "Supports",
           "responsibility": "Shared",
@@ -2519,12 +2492,30 @@
           "flagged": false
         },
         {
-          "number": "4.1.2",
-          "name": "Name, Role, Value",
-          "level": "A",
+          "number": "1.4.4",
+          "name": "Resize Text",
+          "level": "AA",
           "conformance": "Supports",
           "responsibility": "Shared",
-          "group": "Hybrid",
+          "group": "Automated",
+          "flagged": false
+        },
+        {
+          "number": "1.4.10",
+          "name": "Reflow",
+          "level": "AA",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
+          "flagged": false
+        },
+        {
+          "number": "1.4.12",
+          "name": "Text Spacing",
+          "level": "AA",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
           "flagged": false
         },
         {
@@ -2564,6 +2555,15 @@
           "flagged": false
         },
         {
+          "number": "2.5.3",
+          "name": "Label in Name",
+          "level": "A",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
+          "flagged": false
+        },
+        {
           "number": "2.5.8",
           "name": "Target Size (Minimum)",
           "level": "AA",
@@ -2598,8 +2598,8 @@
         "supports": 20,
         "partiallySupports": 4,
         "doesNotSupport": 0,
-        "verified": 19,
-        "automated": 7
+        "verified": 22,
+        "automated": 11
       }
     },
     {
@@ -2610,26 +2610,17 @@
         "doesNotSupport": "0",
         "notApplicable": "31",
         "inherited": "20",
-        "flagged": "2/4"
+        "flagged": "1/4"
       },
       "gaps": [],
       "criteria": [
-        {
-          "number": "1.4.10",
-          "name": "Reflow",
-          "level": "AA",
-          "conformance": "Supports",
-          "responsibility": "Shared",
-          "group": "Manual",
-          "flagged": true
-        },
         {
           "number": "1.3.1",
           "name": "Info and Relationships",
           "level": "A",
           "conformance": "Supports",
           "responsibility": "Shared",
-          "group": "Hybrid",
+          "group": "Manual",
           "flagged": false
         },
         {
@@ -2638,7 +2629,7 @@
           "level": "AA",
           "conformance": "Supports",
           "responsibility": "Shared",
-          "group": "Hybrid",
+          "group": "Manual",
           "flagged": true
         },
         {
@@ -2647,7 +2638,16 @@
           "level": "A",
           "conformance": "Supports",
           "responsibility": "Shared",
-          "group": "Hybrid",
+          "group": "Manual",
+          "flagged": false
+        },
+        {
+          "number": "1.4.10",
+          "name": "Reflow",
+          "level": "AA",
+          "conformance": "Supports",
+          "responsibility": "Shared",
+          "group": "Automated",
           "flagged": false
         }
       ],
@@ -2658,8 +2658,8 @@
         "supports": 4,
         "partiallySupports": 0,
         "doesNotSupport": 0,
-        "verified": 2,
-        "automated": 0
+        "verified": 3,
+        "automated": 1
       }
     }
   ]

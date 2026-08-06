@@ -7,6 +7,7 @@ import AccordionSummary, {
 } from '@mui/material/AccordionSummary';
 import Accordion from '@mui/material/Accordion';
 import ButtonBase from '@mui/material/ButtonBase';
+import SvgIcon from '@mui/material/SvgIcon';
 import describeConformance from '../../test/describeConformance';
 
 const CustomButtonBase = React.forwardRef(({ focusVisible, ...props }, ref) => (
@@ -274,6 +275,51 @@ describe('<AccordionSummary />', () => {
       // The panel toggles only when the user explicitly activates the summary.
       await user.click(screen.getByRole('button'));
       expect(handleChange.callCount).to.equal(1);
+    });
+
+    it('2.5.3 Label in Name: the accessible name is the visible label', () => {
+      render(
+        <Accordion>
+          <AccordionSummary
+            expandIcon={
+              <SvgIcon>
+                <path d="M0 0h24v24H0z" />
+              </SvgIcon>
+            }
+          >
+            Billing details
+          </AccordionSummary>
+        </Accordion>,
+      );
+
+      // An SvgIcon expandIcon is aria-hidden by default, so the name is exactly
+      // the visible text. getByRole with `name` only resolves on an exact match.
+      expect(screen.getByRole('button', { name: 'Billing details' })).not.to.equal(null);
+    });
+
+    describe('4.1.2 Name, Role, Value', () => {
+      it('exposes the button role with its accessible name', () => {
+        render(
+          <Accordion>
+            <AccordionSummary>Shipping</AccordionSummary>
+          </Accordion>,
+        );
+
+        expect(screen.getByRole('button', { name: 'Shipping' })).to.have.tagName('button');
+      });
+
+      it('reflects the open state through aria-expanded', async () => {
+        const { user } = render(
+          <Accordion>
+            <AccordionSummary>Shipping</AccordionSummary>
+          </Accordion>,
+        );
+        const summary = screen.getByRole('button');
+        expect(summary).to.have.attribute('aria-expanded', 'false');
+
+        await user.click(summary);
+        expect(summary).to.have.attribute('aria-expanded', 'true');
+      });
     });
   });
 });

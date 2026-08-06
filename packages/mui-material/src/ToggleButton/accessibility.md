@@ -8,7 +8,7 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 | ⚠️ Partially Supports | 4     |
 | ❌ Does Not Support   | 0     |
 | ➖ Not Applicable     | 31    |
-| 🚩 Flagged            | 5/24  |
+| 🚩 Flagged            | 2/24  |
 
 ## Known gaps
 
@@ -49,20 +49,6 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 
 **Pass:** no instruction relies on "the highlighted one" or "the button on the left" without naming it.
 
-#### 1.4.4 Resize Text · AA
-
-`🚩` · `✅ Supports` · `◐ Shared`
-
-- Typography is set in rem and em, so the label and toggle scale with browser zoom or font size rather than staying pixel-fixed.
-- A fixed-pixel container in the surrounding layout could clip at 200%.
-
-**Manual testing steps**
-
-1. In a UI with toggle buttons, set browser zoom to 200% (<kbd>Ctrl</kbd> or <kbd>Cmd</kbd> and <kbd>+</kbd>).
-2. Confirm labels are fully visible and toggles still work.
-
-**Pass:** nothing is clipped or cut off at 200%.
-
 #### 1.4.5 Images of Text · AA
 
 `✅ Supports` · `○ Author`
@@ -75,19 +61,6 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 1. Select a toggle button's label with the mouse (or zoom in) and confirm it behaves like real text (selectable, stays crisp), not a picture.
 
 **Pass:** labels are live text. No toggle uses an image of text.
-
-#### 1.4.10 Reflow · AA
-
-`🚩` · `✅ Supports` · `◐ Shared`
-
-- A toggle sizes to its content, so it reflows on its own. Horizontal overflow at 320 CSS pixels comes from the surrounding layout, such as a wide `ToggleButtonGroup` that does not wrap.
-
-**Manual testing steps**
-
-1. In a UI with toggle buttons, set the window (or the DevTools device toolbar) to 320 CSS pixels wide.
-2. Confirm there is no sideways scrolling and all toggles are reachable.
-
-**Pass:** content reflows with no horizontal scroll.
 
 #### 2.4.11 Focus Not Obscured (Minimum) · AA
 
@@ -191,20 +164,6 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 
 **Pass:** the focus indicator and any meaningful icon are each at least 3:1, and the pressed state stays identifiable. Disabled parts are exempt.
 
-#### 1.4.12 Text Spacing · AA
-
-`🚩` · `✅ Supports` · `◐ Shared`
-
-- A text label wraps when `white-space: normal` is set and the toggle height comes from padding, not a fixed height, so the WCAG text-spacing values grow the toggle without clipping.
-- No axe-core rule covers this (`avoid-inline-spacing` only inspects inline `style`, but `sx` compiles to a class); a `ToggleButtonA11yTextSpacing` screenshot guards the rendered spacing layout against regressions. Inject the spacing values through a stylesheet to check for clipping.
-
-**Manual testing steps**
-
-1. On a toggle button with a long label, apply the WCAG text-spacing values. The quickest way is to run this in the DevTools console: `document.head.insertAdjacentHTML('beforeend','<style>*{line-height:1.5!important;letter-spacing:.12em!important;word-spacing:.16em!important}</style>')`.
-2. Look for cut-off, clipped, or overlapping label text.
-
-**Pass:** all label text stays visible and the toggle still works.
-
 #### 2.4.6 Headings and Labels · AA
 
 `✅ Supports` · `◐ Shared`
@@ -236,22 +195,6 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 
 **Pass:** every keyboard-focused toggle shows a visible indicator, including under `disableRipple` and `disableFocusRipple`.
 
-#### 2.5.3 Label in Name · A
-
-`✅ Supports` · `◐ Shared`
-
-- When a toggle has a visible text label, that text is the accessible name (the children become the name). An icon-only toggle has no visible text, so its `aria-label` is the name.
-- An `aria-label` that omits or reorders the visible words breaks this. Compare the visible text to the computed name.
-- Confirmed by a unit test in [`./ToggleButton.test.js`](./ToggleButton.test.js) (the accessible name contains the visible label).
-
-**Manual testing steps**
-
-1. Open the accessibility tree (in Chrome DevTools: Elements panel, Accessibility tab) and select a toggle with a visible text label.
-2. Compare its computed Name to the words shown on screen.
-3. Optional: with Voice Control (macOS) or Dragon, say "click [label]" and confirm it activates.
-
-**Pass:** the visible text appears in the accessible name. An `aria-label` that drops or reorders the visible words fails.
-
 #### 4.1.2 Name, Role, Value · A
 
 `✅ Supports` · `◐ Shared`
@@ -269,6 +212,26 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 **Pass:** name, role, and state are correct for every variant, and state changes are announced.
 
 ### ⚙️ Automated
+
+#### 1.4.4 Resize Text · AA
+
+`✅ Supports` · `◐ Shared`
+
+- Typography is set in rem and em, so the label and toggle scale with browser zoom or font size rather than staying pixel-fixed.
+- A fixed-pixel container in the surrounding layout could clip at 200%. Covered by a Playwright test at 200% text size.
+
+#### 1.4.10 Reflow · AA
+
+`✅ Supports` · `◐ Shared`
+
+- A toggle sizes to its content, so it reflows on its own. Horizontal overflow at 320 CSS pixels comes from the surrounding layout, such as a wide `ToggleButtonGroup` that does not wrap. Covered by a Playwright test at a 320px viewport.
+
+#### 1.4.12 Text Spacing · AA
+
+`✅ Supports` · `◐ Shared`
+
+- A text label wraps when `white-space: normal` is set and the toggle height comes from padding, not a fixed height, so the WCAG text-spacing values grow the toggle without clipping.
+- No axe-core rule covers this (`avoid-inline-spacing` only inspects inline `style`, but `sx` compiles to a class); a `ToggleButtonA11yTextSpacing` screenshot guards the rendered spacing layout against regressions. Inject the spacing values through a stylesheet to check for clipping. Covered by a Playwright test applying the WCAG text-spacing overrides.
 
 #### 2.1.1 Keyboard · A
 
@@ -297,7 +260,15 @@ Rated against WCAG 2.2 Level A and AA. See the [reports legend](../accessibility
 `✅ Supports` · `● Component`
 
 - Activation runs on `click`, fired on pointer-up over the target. `onMouseDown` only starts the ripple, and releasing off the target cancels, so nothing runs on the down event.
-- Confirmed by a unit test in [`./ToggleButton.test.js`](./ToggleButton.test.js) (a pointer released off the target does not activate; `click` does).
+- Confirmed by a unit test in [`./ToggleButton.test.js`](./ToggleButton.test.js) (a pointer released off the target does not activate; `click` does). Covered by unit tests.
+
+#### 2.5.3 Label in Name · A
+
+`✅ Supports` · `◐ Shared`
+
+- When a toggle has a visible text label, that text is the accessible name (the children become the name). An icon-only toggle has no visible text, so its `aria-label` is the name.
+- An `aria-label` that omits or reorders the visible words breaks this. Compare the visible text to the computed name.
+- Confirmed by a unit test in [`./ToggleButton.test.js`](./ToggleButton.test.js) (the accessible name contains the visible label). Covered by unit tests.
 
 #### 2.5.8 Target Size (Minimum) · AA
 

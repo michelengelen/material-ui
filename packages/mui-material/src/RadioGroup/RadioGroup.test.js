@@ -4,6 +4,9 @@ import { spy } from 'sinon';
 import PropTypes from 'prop-types';
 import { act, createRenderer, fireEvent, isJsdom, screen } from '@mui/internal-test-utils';
 import FormGroup from '@mui/material/FormGroup';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormLabel from '@mui/material/FormLabel';
 import Radio from '@mui/material/Radio';
 import RadioGroup, { useRadioGroup, radioGroupClasses as classes } from '@mui/material/RadioGroup';
 import describeConformance from '../../test/describeConformance';
@@ -465,5 +468,35 @@ describe('<RadioGroup />', () => {
         expect(after).toHaveFocus();
       },
     );
+
+    describe('4.1.2 Name, Role, Value', () => {
+      it('exposes the radiogroup role named by the author FormLabel', () => {
+        render(
+          <FormControl>
+            <FormLabel id="pet-label">Pet</FormLabel>
+            <RadioGroup aria-labelledby="pet-label">
+              <FormControlLabel value="cat" control={<Radio />} label="Cat" />
+              <FormControlLabel value="dog" control={<Radio />} label="Dog" />
+            </RadioGroup>
+          </FormControl>,
+        );
+
+        expect(screen.getByRole('radiogroup', { name: 'Pet' })).not.to.equal(null);
+      });
+
+      it('exposes the selected value through the checked radio', async () => {
+        const { user } = render(
+          <RadioGroup aria-label="pet">
+            <FormControlLabel value="cat" control={<Radio />} label="Cat" />
+            <FormControlLabel value="dog" control={<Radio />} label="Dog" />
+          </RadioGroup>,
+        );
+
+        await user.click(screen.getByRole('radio', { name: 'Dog' }));
+
+        expect(screen.getByRole('radio', { name: 'Dog' })).to.have.property('checked', true);
+        expect(screen.getByRole('radio', { name: 'Cat' })).to.have.property('checked', false);
+      });
+    });
   });
 });

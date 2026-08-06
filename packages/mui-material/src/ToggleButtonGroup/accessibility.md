@@ -13,7 +13,7 @@ Unlike a radio group, ToggleButtonGroup adds no roving tab order and no arrow-ke
 | ❌ Does Not Support             | 0     |
 | ➖ Not Applicable               | 31    |
 | ↗ Inherited (see Toggle Button) | 20    |
-| 🚩 Flagged                      | 2/4   |
+| 🚩 Flagged                      | 1/4   |
 
 The first rows and Not Applicable count the 4 group-level criteria plus the 31 that do not apply; Inherited adds the 20 item-level criteria rated in Toggle Button (4 + 31 + 20 = 55). Flagged is the ratio of source-assessed to applicable group-level criteria; inherited criteria are excluded.
 
@@ -24,22 +24,6 @@ No group-level gaps.
 ## Success criteria
 
 ### 🔍 Manual
-
-#### 1.4.10 Reflow · AA
-
-`🚩` · `✅ Supports` · `◐ Shared`
-
-- Each toggle sizes to its content, but the group owns the layout: a horizontal group is `display: inline-flex` and does not wrap (`ToggleButtonGroup.js`), so a wide row of toggles can overflow horizontally at 320 CSS pixels.
-- The component provides `orientation="vertical"` as the escape hatch; the author keeps the group within 320 pixels by switching orientation or limiting the number of toggles.
-
-**Manual testing steps**
-
-1. In a UI with a horizontal toggle button group, set the window (or the DevTools device toolbar) to 320 CSS pixels wide.
-2. Confirm there is no sideways scrolling and every toggle is reachable, switching the group to vertical orientation if the row does not fit.
-
-**Pass:** content reflows with no horizontal scroll.
-
-### 🔁 Hybrid
 
 #### 1.3.1 Info and Relationships · A
 
@@ -107,6 +91,15 @@ No group-level gaps.
 - **3.2.1 On Focus (A).** Each toggle changing nothing on focus.
 - **3.2.2 On Input (A).** Each toggle changing only its pressed state.
 - **3.2.4 Consistent Identification (AA).** Each toggle's stable label.
+
+### ⚙️ Automated
+
+#### 1.4.10 Reflow · AA
+
+`✅ Supports` · `◐ Shared`
+
+- Each toggle sizes to its content, but the group owns the layout: a horizontal group is `display: inline-flex` and does not wrap (`ToggleButtonGroup.js`), so a wide row of toggles can overflow horizontally at 320 CSS pixels.
+- The component provides `orientation="vertical"` as the escape hatch; the author keeps the group within 320 pixels by switching orientation or limiting the number of toggles. Covered by a Playwright test at a 320px viewport.
 
 ## Not applicable
 

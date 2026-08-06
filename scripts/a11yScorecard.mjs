@@ -81,6 +81,13 @@ function parseCriteria(markdown) {
   const criteria = [];
   let group = null;
 
+  /** Everything between this heading and the next one — used to check citations. */
+  const bodyAfter = (index) => {
+    const rest = lines.slice(index + 1);
+    const nextHeading = rest.findIndex((line) => /^#{2,4} /.test(line));
+    return (nextHeading === -1 ? rest : rest.slice(0, nextHeading)).join('\n');
+  };
+
   lines.forEach((line, index) => {
     const groupHeading = line.match(TESTING_GROUP_REGEX);
     if (groupHeading) {
@@ -113,6 +120,7 @@ function parseCriteria(markdown) {
       responsibility: responsibilityToken?.replace(/^[●◐○]\s*/, '') ?? null,
       group,
       flagged,
+      body: bodyAfter(index),
     });
   });
 
@@ -289,6 +297,41 @@ function renderDocsTable(reports) {
   return [...header, ...rows, totalRow].join('\n');
 }
 
+/**
+ * An ⚙️ Automated rating is a claim that something deterministic proves the
+ * criterion, so the entry has to say what: an axe rule, a unit test, or a
+ * Playwright test. Prose reasoning alone is a Hybrid or Manual rating.
+ */
+const EVIDENCE_CITATION = /Covered by|Confirmed by|axe-core|a11y\.json/;
+
+/**
+ * A report must not claim more evidence than exists. Two invariants: an
+ * Automated criterion cannot also be flagged 🚩 (the flag means no test
+ * confirms it), and it must cite the evidence behind the claim.
+ */
+function findEvidenceViolations(reports) {
+  const violations = [];
+
+  for (const report of reports) {
+    for (const criterion of report.criteria) {
+      if (criterion.group !== 'Automated' || criterion.conformance === 'Not Applicable') {
+        continue;
+      }
+      if (criterion.flagged) {
+        violations.push(
+          `${report.component} ${criterion.number}: rated Automated but still flagged 🚩`,
+        );
+      } else if (!EVIDENCE_CITATION.test(criterion.body ?? '')) {
+        violations.push(
+          `${report.component} ${criterion.number}: rated Automated but cites no test or axe rule`,
+        );
+      }
+    }
+  }
+
+  return violations;
+}
+
 function replaceBlock(source, replacement) {
   const start = source.indexOf(START_MARKER);
   const end = source.indexOf(END_MARKER);
@@ -318,7 +361,11 @@ async function run(argv) {
     componentCount: reports.length,
     totals,
     criteria: rollUpCriteria(reports),
-    components: reports,
+    // `body` is only needed for the evidence check, not by consumers.
+    components: reports.map((report) => ({
+      ...report,
+      criteria: report.criteria.map(({ body, ...criterion }) => criterion),
+    })),
   };
 
   // All three outputs are committed, so they have to match what Prettier would
@@ -355,7 +402,17 @@ async function run(argv) {
     nextScorecard !== currentScorecard ||
     nextDocsPage !== currentDocsPage;
 
+  const violations = findEvidenceViolations(reports);
+
   if (check) {
+    if (violations.length > 0) {
+      console.error('Reports claim automated evidence that does not exist:\n');
+      violations.forEach((violation) => console.error(`  ${violation}`));
+      console.error(
+        '\nEither write the test, or move the criterion to 🔁 Hybrid / 🔍 Manual in the report.',
+      );
+      process.exit(1);
+    }
     if (stale) {
       console.error(
         'Accessibility scorecard is out of date. Run `pnpm a11y:scorecard` and commit the result.',
@@ -364,6 +421,11 @@ async function run(argv) {
     }
     console.log(`Accessibility scorecard is up to date (${reports.length} components).`);
     return;
+  }
+
+  if (violations.length > 0) {
+    console.warn('Warning: reports claim automated evidence that does not exist:');
+    violations.forEach((violation) => console.warn(`  ${violation}`));
   }
 
   await fs.writeFile(indexPath, nextIndex);

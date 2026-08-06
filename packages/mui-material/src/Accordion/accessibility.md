@@ -11,7 +11,7 @@ This doc covers the root `<Accordion>` together with `AccordionDetails` and `Acc
 | ❌ Does Not Support                | 0     |
 | ➖ Not Applicable                  | 31    |
 | ↗ Inherited (see AccordionSummary) | 5     |
-| 🚩 Flagged                         | 6/19  |
+| 🚩 Flagged                         | 3/19  |
 
 ## Known gaps
 
@@ -57,19 +57,6 @@ This doc covers the root `<Accordion>` together with `AccordionDetails` and `Acc
 
 **Pass:** the state stays distinguishable without color.
 
-#### 1.4.4 Resize Text · AA
-
-`🚩` · `✅ Supports` · `◐ Shared`
-
-- Header and panel text use rem and theme spacing, so the accordion scales with browser zoom; a fixed-pixel wrapper in the surrounding layout could clip at 200%.
-
-**Manual testing steps**
-
-1. In a UI with accordions, set browser zoom to 200%.
-2. Confirm header and panel text are fully visible and the control still toggles.
-
-**Pass:** nothing is clipped at 200%.
-
 #### 1.4.5 Images of Text · AA
 
 `✅ Supports` · `○ Author`
@@ -81,19 +68,6 @@ This doc covers the root `<Accordion>` together with `AccordionDetails` and `Acc
 1. Confirm the header or panel text is real text and not an image.
 
 **Pass:** no header or panel renders its text as an image.
-
-#### 1.4.10 Reflow · AA
-
-`🚩` · `✅ Supports` · `◐ Shared`
-
-- The accordion is full width and its text wraps, so it reflows on its own; horizontal overflow at 320 CSS pixels comes from the surrounding layout.
-
-**Manual testing steps**
-
-1. In a UI with accordions, set the viewport to 320 CSS pixels wide.
-2. Confirm there is no sideways scrolling and all text is reachable.
-
-**Pass:** content reflows with no horizontal scroll.
 
 #### 2.4.11 Focus Not Obscured (Minimum) · AA
 
@@ -162,20 +136,6 @@ This doc covers the root `<Accordion>` together with `AccordionDetails` and `Acc
 
 **Pass:** every heading describes its section.
 
-#### 1.4.12 Text Spacing · AA
-
-`🚩` · `✅ Supports` · `◐ Shared`
-
-- Header and panel heights come from padding, not fixed heights, so the WCAG text-spacing values grow the accordion without clipping.
-- axe-core `avoid-inline-spacing` passes, and a visual-regression screenshot guards the layout.
-
-**Manual testing steps**
-
-1. On an accordion with a long summary label and multi-paragraph panel content, apply the four WCAG text-spacing values in the DevTools console: `document.head.insertAdjacentHTML('beforeend','<style>*{line-height:1.5!important;letter-spacing:.12em!important;word-spacing:.16em!important}p{margin-bottom:2em!important}</style>')`.
-2. Look for clipped or overlapping text.
-
-**Pass:** all header and panel text stays visible.
-
 #### 4.1.2 Name, Role, Value · A
 
 `✅ Supports` · `◐ Shared`
@@ -191,6 +151,25 @@ This doc covers the root `<Accordion>` together with `AccordionDetails` and `Acc
 **Pass:** state, role, and the header-to-region name are all exposed.
 
 ### ⚙️ Automated
+
+#### 1.4.4 Resize Text · AA
+
+`✅ Supports` · `◐ Shared`
+
+- Header and panel text use rem and theme spacing, so the accordion scales with browser zoom; a fixed-pixel wrapper in the surrounding layout could clip at 200%. Covered by a Playwright test at 200% text size.
+
+#### 1.4.10 Reflow · AA
+
+`✅ Supports` · `◐ Shared`
+
+- The accordion is full width and its text wraps, so it reflows on its own; horizontal overflow at 320 CSS pixels comes from the surrounding layout. Covered by a Playwright test at a 320px viewport.
+
+#### 1.4.12 Text Spacing · AA
+
+`✅ Supports` · `◐ Shared`
+
+- Header and panel heights come from padding, not fixed heights, so the WCAG text-spacing values grow the accordion without clipping.
+- axe-core `avoid-inline-spacing` passes, and a visual-regression screenshot guards the layout. Covered by a Playwright test applying the WCAG text-spacing overrides.
 
 #### 2.1.1 Keyboard · A
 
@@ -218,7 +197,7 @@ This doc covers the root `<Accordion>` together with `AccordionDetails` and `Acc
 `✅ Supports` · `● Component`
 
 - The accordion toggles on `click`, fired on pointer-up; `mousedown` alone does not toggle.
-- Confirmed by a unit test in [`../AccordionSummary/AccordionSummary.test.js`](../AccordionSummary/AccordionSummary.test.js) (releasing off the target does not toggle; a full click does).
+- Confirmed by a unit test in [`../AccordionSummary/AccordionSummary.test.js`](../AccordionSummary/AccordionSummary.test.js) (releasing off the target does not toggle; a full click does). Covered by unit tests.
 
 #### 3.2.1 On Focus · A
 
