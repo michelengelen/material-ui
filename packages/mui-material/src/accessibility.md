@@ -75,7 +75,7 @@ Three kinds of test, none of which writes anything into a report:
 
 | Kind                    | Where                                                    | Covers                                                                                     |
 | :---------------------- | :------------------------------------------------------- | :----------------------------------------------------------------------------------------- |
-| Unit tests              | `<Component>/<Component>.test.js`, named `it('2.1.1 …')` | Behaviour: keyboard operation, focus order, pointer cancellation, accessible naming        |
+| Unit tests              | `<Component>/<Component>.test.js`, named `it('2.1.1 …')` | Behavior: keyboard operation, focus order, pointer cancellation, accessible naming         |
 | axe-core                | The docs demos, inside the Playwright loop               | The mechanical layer: ARIA, labels, text contrast, target size                             |
 | Playwright layout suite | `test/regressions/index.test.js`                         | What axe has no rule for: reflow at 320px, 200% text size, the WCAG text-spacing overrides |
 
